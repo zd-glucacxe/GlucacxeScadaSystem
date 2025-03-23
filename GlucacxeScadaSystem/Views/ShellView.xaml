@@ -8,21 +8,27 @@
         
         xmlns:prism="http://prismlibrary.com/"
         xmlns:viewModels="clr-namespace:GlucacxeScadaSystem.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
         prism:ViewModelLocator.AutoWireViewModel="True"
         d:DataContext="{d:DesignInstance viewModels:ShellViewModel}"
-        Background="{DynamicResource MahApps.Brushes.Background}"
+        
         FontFamily="Microsoft YaHei"
         TextElement.FontSize="16"
         TextElement.FontWeight="Regular"
         WindowStartupLocation="CenterScreen"
        
 
-        Title="ShellView" 
-        Height="450" 
+        Title="Scada 喷涂工艺" 
+        Height="500" 
         Width="800"
         mc:Ignorable="d">
-    <Grid>
+
+    <!--实现弹窗-->
+    <materialDesign:DialogHost Identifier="ShellDialog">
         
-    </Grid>
+        <!--将登录窗体放进来-->
+        <ContentControl prism:RegionManager.RegionName="MainRegion" x:Name="Container"/>
+
+    </materialDesign:DialogHost>
 </mah:MetroWindow>

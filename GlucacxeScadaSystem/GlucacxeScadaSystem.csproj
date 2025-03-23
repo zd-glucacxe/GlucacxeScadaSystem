@@ -19,6 +19,6 @@
     <PackageReference Include="SqlSugarCore" Version="5.1.4.185" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Models\" />
+    <Folder Include="EventAggregator\" />
   </ItemGroup>
 </Project>

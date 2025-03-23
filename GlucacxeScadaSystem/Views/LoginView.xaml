@@ -1,0 +1,80 @@
+﻿<UserControl x:Class="GlucacxeScadaSystem.Views.LoginView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GlucacxeScadaSystem.Views"
+             xmlns:prism="http://prismlibrary.com/"
+             prism:ViewModelLocator.AutoWireViewModel="True"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:viewModels="clr-namespace:GlucacxeScadaSystem.ViewModels"
+             d:DataContext="{d:DesignInstance viewModels:LoginViewModel}"
+             xmlns:helper ="clr-namespace:GlucacxeScadaSystem.Helpers"
+           
+             Background="{DynamicResource MaterialDesign.Brush.Background}"
+             FontFamily="Microsoft YaHei"
+             FontSize="16"
+             TextElement.FontSize="16"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0">
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1">
+                    <GradientStop Offset="0.0" Color="#47a0ff"/>
+                    <GradientStop Offset="0.5" Color="#7fb3d3"/>
+                    <GradientStop Offset="1.0" Color="#ffffff"/>
+                </LinearGradientBrush>
+            </Border.Background>
+
+            <StackPanel Margin="10" HorizontalAlignment="Center" Orientation="Horizontal">
+                <materialDesign:PackIcon Width="50"
+                                         Height="50"
+                                         Margin="5" Foreground="#1b2755"
+                                         VerticalAlignment="Center" Kind="ChartScatterPlotHexbin"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           FontSize="40"
+                           Foreground="#1b2755"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="喷涂工艺SCADA系统"/>
+            </StackPanel>
+        </Border>
+            
+        <StackPanel Grid.Row="1" Background="White">
+            <TextBox Width="240" Margin="0, 10, 0, 0"
+                     materialDesign:HintAssist.Hint="用户名："
+                     Text="{Binding Username}"/>
+            <PasswordBox Width="240" Margin="0, 10, 0, 0"
+                         materialDesign:HintAssist.Hint="密码："
+                         materialDesign:HintAssist.Foreground="Green"
+                         materialDesign:TextFieldAssist.UnderlineBrush="Green"
+                         Style="{StaticResource MaterialDesignFloatingHintPasswordBox}"
+                         helper:PasswordBoxHelper.Password="{Binding Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <!--绑定Enter键-->
+                <PasswordBox.InputBindings>
+                    <KeyBinding Key="Enter" Command="{Binding LoginCommand }"/>
+                </PasswordBox.InputBindings>
+            </PasswordBox>
+            
+            <Button Margin="0, 15, 0, 0" 
+                    Width="240" 
+                    Content="登录"
+                    Background="#47a0ff"
+                    Style="{StaticResource  MaterialDesignRaisedButton}"
+                    materialDesign:ButtonProgressAssist.Value="1"
+                    materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                    materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                    Command="{Binding LoginCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

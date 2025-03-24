@@ -18,8 +18,49 @@
              TextElement.FontSize="16"
              TextElement.FontWeight="Regular"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
-    <Grid>
-        <TextBlock Text="This is MainWindow" FontSize="26"/>
-        <TextBlock Text="{Binding CurrentUser.UserName}" FontSize="18"/>
-    </Grid>
+    <DockPanel>
+        <DockPanel Background="#47a0ff" DockPanel.Dock="Left">
+            <StackPanel DockPanel.Dock="Top">
+                <!--形状是手，并且水平滚动条不可见-->
+                <ListView Cursor="Hand"
+                          ItemsSource="{Binding MenuEntities}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          SelectedIndex="0">
+
+                    <!--数据模板-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel  Margin="10" HorizontalAlignment="Center" Orientation="Horizontal">
+                                <materialDesign:PackIcon Width="20"
+                                                         Height="18"
+                                                         Margin="5" Foreground="White" Background="Transparent"
+                                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                         Kind="{Binding Icon}"/>
+                                <TextBlock HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"
+                                           FontSize="15"
+                                           Foreground="White"
+                                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                                           Text="{Binding MenuName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <StackPanel Margin="10" HorizontalAlignment="Center" Orientation="Horizontal">
+                <materialDesign:PackIcon Width="25"
+                                         Height="18"
+                                         Margin="5" Foreground="White" Background="Transparent"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Kind="ArrowLeftBoldCircle"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           FontSize="18"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="切换用户 "/>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel/>
+        </DockPanel>
 </UserControl>

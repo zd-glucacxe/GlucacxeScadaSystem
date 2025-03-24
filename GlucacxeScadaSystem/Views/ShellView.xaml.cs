@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ControlzEx.Theming;
 using MahApps.Metro.Controls;
 
 namespace GlucacxeScadaSystem.Views
@@ -23,6 +24,12 @@ namespace GlucacxeScadaSystem.Views
         public ShellView()
         {
             InitializeComponent();
+
+            // 切换主题
+            ThemeManager.Current.ChangeTheme(this, ThemeManager.Current.AddTheme(
+                RuntimeThemeGenerator.Current.GenerateRuntimeTheme("Light", Colors.LightSkyBlue)
+                ));
+
         }
     }
 }

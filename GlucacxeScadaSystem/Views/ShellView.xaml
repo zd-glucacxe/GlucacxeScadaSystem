@@ -20,8 +20,8 @@
        
 
         Title="Scada 喷涂工艺" 
-        Height="500" 
-        Width="800"
+        Height="680" 
+        Width="1000"
         mc:Ignorable="d">
 
     <!--实现弹窗-->

@@ -23,6 +23,7 @@ namespace GlucacxeScadaSystem.Views
         public LoginView()
         {
             InitializeComponent();
+            
         }
     }
 }

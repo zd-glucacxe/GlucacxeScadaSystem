@@ -1,4 +1,6 @@
-﻿using GlucacxeScadaSystem.EventAggregator;
+﻿using System.Collections.Generic;
+using System.Windows.Documents;
+using GlucacxeScadaSystem.EventAggregator;
 using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Services;
 using Prism.Events;
@@ -19,6 +21,9 @@ public class MainViewModel : BindableBase
         set => SetProperty(ref _currentUser, value);
     }
 
+    public List<Menu> MenuEntities { get; set; } = new();
+
+
     public MainViewModel(UserSession userSession, IEventAggregator eventAggregator)
     {
         UserSession = userSession;
@@ -26,6 +31,13 @@ public class MainViewModel : BindableBase
 
         // 订阅 LoginEvent;
         _eventAggregator.GetEvent<LoginEvent>().Subscribe(OnUserLoggedIn);
+
+        InitData();
+    }
+
+    private void InitData()
+    {
+        MenuEntities = SqlSugarHelper.Db.Queryable<Menu>().ToList();
     }
 
     private void OnUserLoggedIn(User user)

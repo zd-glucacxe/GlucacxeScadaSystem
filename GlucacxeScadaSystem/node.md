@@ -64,3 +64,9 @@ TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                                     TrueValue="#E3F2FD" />
     </UserControl.Resources>
 ```
+
+## MainView
+``` xml
+
+
+```

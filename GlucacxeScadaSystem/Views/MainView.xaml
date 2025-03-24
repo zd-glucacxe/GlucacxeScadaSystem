@@ -9,6 +9,7 @@
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:viewModels="clr-namespace:GlucacxeScadaSystem.ViewModels"
+             xmlns:regions="http://prismlibrary.com/"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel}"
              d:DesignHeight="800"
              d:DesignWidth="1200"
@@ -18,8 +19,87 @@
              TextElement.FontSize="16"
              TextElement.FontWeight="Regular"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
-    <Grid>
-        <TextBlock Text="This is MainWindow" FontSize="26"/>
-        <TextBlock Text="{Binding CurrentUser.UserName}" FontSize="18"/>
-    </Grid>
+    <DockPanel>
+        <DockPanel Background="#47a0ff" DockPanel.Dock="Left">
+            <StackPanel DockPanel.Dock="Top">
+                <!--形状是手，并且水平滚动条不可见-->
+                <ListView Cursor="Hand"
+                          ItemsSource="{Binding MenuEntities}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          SelectedIndex="0">
+
+                    <!--数据模板-->
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Width="80" 
+                                        Margin="0,5,0,5"
+                                        Background="Transparent">
+                                <!--行为，将事件转为命令-->    
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="PreviewMouseUp">
+                                        <!--由于绑定的是ListView里边的元素，因此需要找到上一层-->
+                                        <i:InvokeCommandAction 
+                                            Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, 
+                                            Path=DataContext.NavigationCommand}" 
+                                                               CommandParameter="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <materialDesign:PackIcon Width="20"
+                                                         Height="12"
+                                                         Margin="5" Foreground="White" Background="Transparent"
+                                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                         Kind="{Binding Icon}"/>
+                                <TextBlock HorizontalAlignment="Center" 
+                                           VerticalAlignment="Center"
+                                           FontSize="12"
+                                           Foreground="White"
+                                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                                           Text="{Binding MenuName}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackPanel>
+            <StackPanel Margin="0,15,0,4" HorizontalAlignment="Center" Orientation="Horizontal">
+                <materialDesign:PackIcon Width="25"
+                                         Height="16"
+                                         Margin="5" Foreground="White" Background="Transparent"
+                                         VerticalAlignment="Center" HorizontalAlignment="Center"
+                                         Kind="ArrowLeftBoldCircle"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           FontSize="14"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="切换用户 "/>
+            </StackPanel>
+        </DockPanel>
+        <DockPanel/>
+        <DockPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <ContentControl Grid.Row="0" x:Name="Page"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"/>
+                
+                <StackPanel Grid.Row="1" Background="#cfd8dc"
+                            Orientation="Horizontal">
+                    <StatusBarItem Margin="0,0,5,0" 
+                                   Foreground="Gray"
+                                   Content="[Spray Process SCADA System by Glucacxe]"/>
+                    <StatusBarItem Margin="0,0,5,0" 
+                                   Foreground="Gray"
+                                   Content="当前用户："/>
+                    <StatusBarItem Margin="0,0,5,0" 
+                                   Foreground="Gray"
+                                   Content="{Binding UserSession.CurrentUser.UserName}"/>
+                </StackPanel>
+
+            </Grid>
+        </DockPanel>
+    </DockPanel>
 </UserControl>

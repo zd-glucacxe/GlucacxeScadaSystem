@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using GlucacxeScadaSystem.Services;
 using GlucacxeScadaSystem.ViewModels;
 using GlucacxeScadaSystem.Views;
@@ -24,12 +25,28 @@ namespace GlucacxeScadaSystem
             // 注册单例
             containerRegistry.RegisterSingleton<ShellViewModel>();
             containerRegistry.RegisterSingleton<LoginViewModel>();
+            containerRegistry.RegisterSingleton<IndexViewModel>();
+            containerRegistry.RegisterSingleton<ChartViewModel>();
+            containerRegistry.RegisterSingleton<UserViewModel>();
+            containerRegistry.RegisterSingleton<ReportViewModel>();
+            containerRegistry.RegisterSingleton<ParamsViewModel>();
+            containerRegistry.RegisterSingleton<LogViewModel>();
+            containerRegistry.RegisterSingleton<FormulaViewModel>();
+            containerRegistry.RegisterSingleton<DataQueryViewModel>();
+            containerRegistry.RegisterSingleton<MainViewModel>();
+            containerRegistry.RegisterSingleton<DeviceViewModel>();
+
+
             // UserSession 注册为单例
             containerRegistry.RegisterSingleton<UserSession>();
 
 
+            //导航
             containerRegistry.RegisterForNavigation<LoginView>();
             containerRegistry.RegisterForNavigation<MainView>();
+
+            containerRegistry.RegisterForNavigation<IndexView>();
+            containerRegistry.RegisterForNavigation<DeviceView>();
         }
 
         /// <summary>

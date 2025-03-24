@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace GlucacxeScadaSystem.Views
 {
     /// <summary>
-    /// LoginView.xaml 的交互逻辑
+    /// UserView.xaml 的交互逻辑
     /// </summary>
-    public partial class LoginView : UserControl
+    public partial class UserView : UserControl
     {
-        public LoginView()
+        public UserView()
         {
             InitializeComponent();
-            
         }
     }
 }

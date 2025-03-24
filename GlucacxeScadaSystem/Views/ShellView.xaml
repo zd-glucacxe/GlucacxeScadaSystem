@@ -6,10 +6,11 @@
         xmlns:local="clr-namespace:GlucacxeScadaSystem.Views"
         xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         
-        xmlns:prism="http://prismlibrary.com/"
+        
         xmlns:viewModels="clr-namespace:GlucacxeScadaSystem.ViewModels"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
 
+        xmlns:prism="http://prismlibrary.com/"
         prism:ViewModelLocator.AutoWireViewModel="True"
         d:DataContext="{d:DesignInstance viewModels:ShellViewModel}"
         
@@ -20,8 +21,8 @@
        
 
         Title="Scada 喷涂工艺" 
-        Height="500" 
-        Width="800"
+        Height="650" 
+        Width="900"
         mc:Ignorable="d">
 
     <!--实现弹窗-->

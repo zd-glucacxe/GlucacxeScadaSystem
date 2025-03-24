@@ -24,7 +24,7 @@ public class LoginViewModel : BindableBase
     public LoginViewModel(UserSession userSession, IEventAggregator eventAggregator, IRegionManager IregionManager)
     {
 
-        InitData();
+        //InitData();
         UserSession = userSession;
         _eventAggregator = eventAggregator;
         _regionManager = IregionManager;  // ② 依赖注入 RegionManager

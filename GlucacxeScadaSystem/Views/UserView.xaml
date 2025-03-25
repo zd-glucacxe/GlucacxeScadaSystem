@@ -5,12 +5,55 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:GlucacxeScadaSystem.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:viewModels="clr-namespace:GlucacxeScadaSystem.ViewModels"
              prism:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:UserViewModel}">
+             d:DataContext="{d:DesignInstance viewModels:UserViewModel}"
+             
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource MaterialDesign.Brush.Background}"
+             FontFamily="Microsoft YaHei"
+             FontSize="16"
+             TextElement.FontSize="16"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center"
+                    Grid.Row="0" Orientation="Horizontal">
+            <Button Margin="0,0,15,0"  Width="100" 
+                    Style="{StaticResource MyButtonStyle}" Content="查询用户"
+                    Command="{Binding SearchUserCommand}"/>
+            <Button Width="100" Style="{StaticResource MyButtonStyle}" Content="添加用户"
+                    Command="{Binding AddUserCommand}"/>
+
+        </StackPanel>
+
+        <ListView Grid.Row="1" ItemsSource="{Binding UserList}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn  DisplayMemberBinding="{Binding Id}" Header="序号"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding UserName}" Header="用户名" />
+                    <GridViewColumn  DisplayMemberBinding="{Binding Role}" Header="角色"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding CreateTime}" Header="创建时间"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding UpdateTime}" Header="更新时间"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
     </Grid>
 </UserControl>

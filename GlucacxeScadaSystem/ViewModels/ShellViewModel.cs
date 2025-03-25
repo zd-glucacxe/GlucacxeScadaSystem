@@ -1,5 +1,7 @@
-﻿using GlucacxeScadaSystem.Models;
+﻿using GlucacxeScadaSystem.EventAggregator;
+using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Views;
+using Prism.Events;
 using Prism.Mvvm;
 using Prism.Regions;
 using System;
@@ -10,12 +12,24 @@ namespace GlucacxeScadaSystem.ViewModels;
 public class ShellViewModel : BindableBase
 {
     private readonly IRegionManager _regionManager;
+    private readonly IEventAggregator _eventAggregator;
 
-    public ShellViewModel(IRegionManager regionManager)
+    public ShellViewModel(IRegionManager regionManager, IEventAggregator eventAggregator)
     {
         InitData();
         _regionManager = regionManager;
         NavigateToLoginView();
+        _eventAggregator = eventAggregator;
+
+        _eventAggregator.GetEvent<ChangUserEvent>().Subscribe(RedirectToLoginView);
+    }
+    
+    private void RedirectToLoginView()
+    {
+        if (_regionManager.Regions.ContainsRegionWithName("MainRegion"))
+        {
+            _regionManager.RequestNavigate("MainRegion", nameof(LoginView));
+        }
     }
 
     /// <summary>

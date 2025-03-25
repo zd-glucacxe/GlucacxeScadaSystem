@@ -47,6 +47,7 @@ namespace GlucacxeScadaSystem
 
             containerRegistry.RegisterForNavigation<IndexView>();
             containerRegistry.RegisterForNavigation<DeviceView>();
+            containerRegistry.RegisterForNavigation<UserView>();
         }
 
         /// <summary>

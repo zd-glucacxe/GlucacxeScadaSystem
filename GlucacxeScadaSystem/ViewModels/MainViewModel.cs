@@ -17,7 +17,8 @@ public class MainViewModel : BindableBase
 
     public DelegateCommand<Menu> NavigationCommand { get; private set; }
 
-
+    public DelegateCommand ChangeUserCommand { get; private set; }
+    
 
     private User _currentUser;
     public User CurrentUser
@@ -38,12 +39,22 @@ public class MainViewModel : BindableBase
         _eventAggregator.GetEvent<LoginEvent>().Subscribe(OnUserLoggedIn);
 
         InitData();
-
+            
         NavigationCommand = new DelegateCommand<Menu>(Navigation);
 
+        ChangeUserCommand = new DelegateCommand(ChangeUser);
 
 
     }
+
+    /// <summary>
+    /// 切换用户
+    /// </summary>
+    private void ChangeUser()
+    {
+        _eventAggregator.GetEvent<ChangUserEvent>().Publish();
+    }
+
 
     /// <summary>
     /// 按钮被点击导航到对应的页面

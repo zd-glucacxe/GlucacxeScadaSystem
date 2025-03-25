@@ -31,8 +31,10 @@ public class LoginViewModel : BindableBase
 
         LoginCommand = new DelegateCommand(OnLogin);
 
+       
     }
 
+ 
 
 
     private string _username = "user";

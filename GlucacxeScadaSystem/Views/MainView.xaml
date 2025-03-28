@@ -19,7 +19,7 @@
              TextElement.FontWeight="Regular"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <DockPanel>
-        <DockPanel Background="#47a0ff" DockPanel.Dock="Left">
+        <DockPanel Background="#546e7a" DockPanel.Dock="Left">
             <StackPanel DockPanel.Dock="Top">
                 <ListView Cursor="Hand"
                           ItemsSource="{Binding MenuEntities}"

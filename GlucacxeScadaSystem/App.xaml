@@ -23,7 +23,7 @@
                 <!--本地资源合并-->
                 <!--  local Resources  -->
                 <ResourceDictionary Source="/Styles/MyButton.xaml" />
-                <!--<ResourceDictionary Source="/Styles/TulingTextBlock.xaml" />-->
+                <ResourceDictionary Source="/Styles/MyTextBlock.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

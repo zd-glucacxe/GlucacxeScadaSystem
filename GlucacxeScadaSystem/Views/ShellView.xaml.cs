@@ -27,7 +27,7 @@ namespace GlucacxeScadaSystem.Views
 
             // 切换主题
             ThemeManager.Current.ChangeTheme(this, ThemeManager.Current.AddTheme(
-                RuntimeThemeGenerator.Current.GenerateRuntimeTheme("Light", Colors.LightSkyBlue)
+                RuntimeThemeGenerator.Current.GenerateRuntimeTheme("Light", Colors.AliceBlue)
                 ));
 
         }

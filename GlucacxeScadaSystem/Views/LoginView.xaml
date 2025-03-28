@@ -29,7 +29,7 @@
 
         <Border Grid.Row="0">
             <Border.Background>
-                <LinearGradientBrush StartPoint="0, 0" EndPoint="1, 1">
+                <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 1">
                     <GradientStop Offset="0.0" Color="#47a0ff"/>
                     <GradientStop Offset="0.5" Color="#7fb3d3"/>
                     <GradientStop Offset="1.0" Color="#ffffff"/>

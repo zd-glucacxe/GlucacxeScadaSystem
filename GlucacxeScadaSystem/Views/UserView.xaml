@@ -40,10 +40,12 @@
                     Command="{Binding SearchUserCommand}"/>
             <Button Width="100" Style="{StaticResource MyButtonStyle}" Content="添加用户"
                     Command="{Binding AddUserCommand}"/>
-
         </StackPanel>
 
-        <ListView Grid.Row="1" ItemsSource="{Binding UserList}">
+        <ListView Grid.Row="1" ItemsSource="{Binding UserList}" 
+                  Margin="10" 
+                  VerticalAlignment="Stretch"
+                  HorizontalAlignment="Stretch">
             <ListView.View>
                 <GridView>
                     <GridViewColumn  DisplayMemberBinding="{Binding Id}" Header="序号"/>
@@ -51,6 +53,30 @@
                     <GridViewColumn  DisplayMemberBinding="{Binding Role}" Header="角色"/>
                     <GridViewColumn  DisplayMemberBinding="{Binding CreateTime}" Header="创建时间"/>
                     <GridViewColumn  DisplayMemberBinding="{Binding UpdateTime}" Header="更新时间"/>
+
+                    <GridViewColumn Header="操作">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="修改" Style="{DynamicResource MyTextBlock}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewMouseUp">
+                                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.EditUserCommand}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBlock>
+                                    <Rectangle Width="10"/>
+                                    <TextBlock Text="删除" Style="{DynamicResource MyTextBlock}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="PreviewMouseUp">
+                                                <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.DeleteUserCommand}" CommandParameter="{Binding}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                 </GridView>
             </ListView.View>
         </ListView>

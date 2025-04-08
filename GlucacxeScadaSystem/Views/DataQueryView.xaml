@@ -9,8 +9,116 @@
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:DataQueryViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:vm="clr-namespace:GlucacxeScadaSystem.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:userControls="clr-namespace:GlucacxeScadaSystem.UserControls"
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource MaterialDesign.Brush.Background}"
+             FontFamily="Microsoft YaHei"
+             FontSize="16"
+             TextElement.FontSize="16"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded">
+            <i:InvokeCommandAction Command="{Binding LoadCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
+
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="12*"/>
+            <RowDefinition Height="0.8*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <Label Margin="5" Content="开始日期:"/>
+                <DatePicker Margin="5"
+                            Width="130"
+                            SelectedDate="{Binding StartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            materialDesign:HintAssist.Hint="StartDate"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                <Label Margin="5" Content="结束日期:"/>
+                <DatePicker Margin="5"
+                            Width="130"
+                            SelectedDate="{Binding EndTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            materialDesign:HintAssist.Hint="EndDate"
+                            Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+                <Button Width="130" Margin="20,5,5,5" Content="重置查询" Command="{Binding ResetCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="10,5,5,5" Content="查询数据" Command="{Binding SearchCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="10,5,5,5" Content="导出分页" 
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="10,5,5,5" Content="导出全部" 
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="10,5,5,5" Content="报表导出" 
+                        Style="{DynamicResource MyButtonStyle }"/>
+            </StackPanel>
+        </StackPanel>
+
+
+        <ListView Grid.Row="1" ItemsSource="{Binding ScadaReadDataList}" 
+            Margin="10" 
+            VerticalAlignment="Stretch"
+            HorizontalAlignment="Stretch">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn  DisplayMemberBinding="{Binding Id}" Header="序号"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding DegreasingSprayPumpPressure}" Header=" 脱脂压力值" />
+                    <GridViewColumn  DisplayMemberBinding="{Binding DegreasingPhValue}" Header="脱脂pH值"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding RoughWashSprayPumpPressure}" Header="粗洗压力值"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding PhosphatingSprayPumpPressure}" Header="陶化压力值"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding PhosphatingPhValue}" Header="陶化pH值"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding FineWashSprayPumpPressure}" Header="精洗压力值"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding MoistureFurnaceTemperature}" Header="水分炉温度"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding CuringFurnaceTemperature}" Header="固化炉温度"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding FactoryTemperature}" Header="厂内温度"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding FactoryHumidity}" Header="厂内湿度"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding CreateTime}" Header="创建时间"/>
+                    <GridViewColumn  DisplayMemberBinding="{Binding UpdateTime}" Header="更新时间"/>
+
+                    <GridViewColumn Header="操作">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="修改" Style="{DynamicResource MyTextBlock}">
+                       <i:Interaction.Triggers>
+                           <i:EventTrigger EventName="PreviewMouseUp">
+                               <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.EditUserCommand}" CommandParameter="{Binding}" />
+                           </i:EventTrigger>
+                       </i:Interaction.Triggers>
+                                    </TextBlock>
+                                    <Rectangle Width="10"/>
+                                    <TextBlock Text="删除" Style="{DynamicResource MyTextBlock}">
+                       <i:Interaction.Triggers>
+                           <i:EventTrigger EventName="PreviewMouseUp">
+                               <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.DeleteUserCommand}" CommandParameter="{Binding}" />
+                           </i:EventTrigger>
+                       </i:Interaction.Triggers>
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+        <!--分页控件-->
+        <userControls:PaginationControl Grid.Row="2" 
+                                        CurrentPage="{Binding CurrentPage, Mode=TwoWay}"
+                                        TotalPages="{Binding TotalPages, Mode=Default}"
+                                        GotoFirstPageCommand="{Binding GotoFistCommand}"
+                                        GotoLastPageCommand="{Binding GotoLastCommand}"
+                                        GotoNextPageCommand="{Binding GotoNextCommand}"
+                                        GotoPreviousPageCommand="{Binding GotoPreviousCommand}"
+                                        />
+
     </Grid>
 </UserControl>

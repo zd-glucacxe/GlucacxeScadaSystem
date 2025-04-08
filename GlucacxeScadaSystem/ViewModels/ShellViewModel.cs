@@ -111,15 +111,16 @@ public class ShellViewModel : BindableBase
         }
     
 
-        if (false)
+        if (true)
         {
             // 第一次建表 则为true 随后为false
-            if (false)
+            if (true)
             {
                 // 建库
-                SqlSugarHelper.Db.DbMaintenance.CreateDatabase();
+                //SqlSugarHelper.Db.DbMaintenance.CreateDatabase();
                 // 建表
-                SqlSugarHelper.Db.CodeFirst.InitTables(typeof(User));
+                //SqlSugarHelper.Db.CodeFirst.InitTables(typeof(User));
+                SqlSugarHelper.Db.CodeFirst.InitTables<ScadaReadData>();
 
             }
             // 插入数据 root user user1
@@ -128,14 +129,61 @@ public class ShellViewModel : BindableBase
                 var userList = new List<User>();
                 userList.Add(new User() { UserName = "root", PassWord = "root", Role = 0 });
                 userList.Add(new User() { UserName = "user", PassWord = "user", Role = 1 });
-                userList.Add(new User() { UserName = "user1", PassWord = "user1", Role = 1 });
+                userList.Add(new User() { UserName = "user1", PassWord = "user1", Role = 1});
 
                 // 执行插入
                 SqlSugarHelper.Db.Insertable(userList).ExecuteCommand();
             }
-        }
-        
 
+            // 插入数据  ScadaReadData
+            if (SqlSugarHelper.Db.Queryable<ScadaReadData>().Count() == 0)
+            {
+                var scadaReadDataList = new List<ScadaReadData>();
+
+                for (int i = 0; i < 100; i++)
+                {
+                    var scadaReadData = new ScadaReadData()
+                    {
+                        DegreasingSprayPumpPressure = GetRandomFloat(0.5f, 5.0f),
+                        DegreasingPhValue = GetRandomFloat(6.0f, 9.0f),
+                        RoughWashSprayPumpPressure = GetRandomFloat(1.0f, 4.0f),
+                        PhosphatingSprayPumpPressure = GetRandomFloat(0.8f, 3.5f),
+                        PhosphatingPhValue = GetRandomFloat(4.0f, 7.0f),
+                        FineWashSprayPumpPressure = GetRandomFloat(1.2f, 4.5f),
+                        MoistureFurnaceTemperature = GetRandomFloat(40.0f, 80.0f),
+                        CuringFurnaceTemperature = GetRandomFloat(120.0f, 200.0f),
+                        FactoryTemperature = GetRandomFloat(15.0f, 35.0f),
+                        FactoryHumidity = GetRandomFloat(30.0f, 80.0f),
+                        ProductionCount = GetRandomFloat(0, 1000),
+                        DefectiveCount = GetRandomFloat(0, 50),
+                        ProductionPace = GetRandomFloat(0.5f, 2.0f),
+                        AccumulatedAlarms = GetRandomFloat(0, 20),
+                        CreateTime = DateTime.Now.AddDays(GetRandomFloat(1f, 10f)),
+                        UpdateTime = DateTime.Now.AddDays(GetRandomFloat(1f, 10f))
+                    };
+                    scadaReadDataList.Add(scadaReadData);
+                }
+               
+
+                // 执行插入
+                SqlSugarHelper.Db.Insertable(scadaReadDataList).ExecuteCommand();
+            }
+        }
+
+    }
+
+    
+
+
+    /// <summary>
+    /// 生成随机数
+    /// </summary>
+    /// <param name="min">最小值</param>
+    /// <param name="max">最大值</param>
+    /// <returns></returns>
+    private float GetRandomFloat(float min, float max)
+    {
+        return (float)(new Random().NextDouble() * (max - min) + min);
     }
 
     private void NavigateToLoginView()

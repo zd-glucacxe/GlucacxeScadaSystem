@@ -53,11 +53,18 @@
                         Style="{DynamicResource MyButtonStyle }"/>
                 <Button Width="130" Margin="10,5,5,5" Content="查询数据" Command="{Binding SearchCommand}"
                         Style="{DynamicResource MyButtonStyle }"/>
-                <Button Width="130" Margin="10,5,5,5" Content="导出分页" 
+                <Button Width="130" Margin="10,5,5,5" Content="导出分页" Command="{Binding OutPageCommand}"
                         Style="{DynamicResource MyButtonStyle }"/>
-                <Button Width="130" Margin="10,5,5,5" Content="导出全部" 
+                <Button Width="130" Margin="10,5,5,5" Content="导出全部" Command="{Binding OutAllCommand}"
                         Style="{DynamicResource MyButtonStyle }"/>
-                <Button Width="130" Margin="10,5,5,5" Content="报表导出" 
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal">
+                <Button Width="130" Margin="10,5,5,5" Content="报表设计"  Command="{Binding DesignReportCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="10,5,5,5" Content="报表预览" Command="{Binding PreviewReportCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="10,5,5,5" Content="报表导出" Command="{Binding OutputReportCommand}"
                         Style="{DynamicResource MyButtonStyle }"/>
             </StackPanel>
         </StackPanel>

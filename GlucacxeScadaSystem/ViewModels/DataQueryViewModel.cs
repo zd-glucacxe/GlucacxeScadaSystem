@@ -1,9 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Documents;
+using FastReport;
+using FastReport.Export.Pdf;
+using GlucacxeScadaSystem.Helpers;
 using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Services;
+using MiniExcelLibs;
 using Prism.Commands;
 using Prism.Mvvm;
 
@@ -100,10 +105,24 @@ public class DataQueryViewModel : BindableBase
     public DelegateCommand SearchCommand { get; private set; }
     public DelegateCommand ResetCommand { get; private set; }
 
+    // ---- excel文件导出 ----
+    public DelegateCommand OutPageCommand { get; private set; }
+    public DelegateCommand OutAllCommand { get; private set; }
+    
+
+    /// ---- 分页 -----
     public DelegateCommand GotoFistCommand { get; private set; }
     public DelegateCommand GotoLastCommand { get; private set; }
     public DelegateCommand GotoNextCommand { get; private set; }
     public DelegateCommand GotoPreviousCommand { get; private set; }
+    
+        
+    /// ---- 报表 ----
+    public DelegateCommand DesignReportCommand { get; private set; }
+    public DelegateCommand PreviewReportCommand { get; private set; }
+    public DelegateCommand OutputReportCommand { get; private set; }
+
+
 
 
     public DataQueryViewModel()
@@ -111,6 +130,14 @@ public class DataQueryViewModel : BindableBase
         LoadCommand = new DelegateCommand(ExecuteLoad);
         SearchCommand = new DelegateCommand(ExecuteSearch);
         ResetCommand = new DelegateCommand(ExecuteReset);
+
+        OutPageCommand = new DelegateCommand(OutPage);
+        OutAllCommand = new DelegateCommand(OutAll);
+
+        DesignReportCommand = new DelegateCommand(DesignReport);
+        PreviewReportCommand = new DelegateCommand(PreviewReport);
+        OutputReportCommand = new DelegateCommand(OutputReport);
+
 
         // --- 初始化分页命令 ---
         // 关联命令的执行方法 (Execute...) 和可执行判断方法 (CanExecute...)
@@ -133,6 +160,101 @@ public class DataQueryViewModel : BindableBase
 
         // ViewModel 创建时加载初始数据
         ExecuteLoad();
+    }
+
+    /// <summary>
+    /// 导出报表
+    /// </summary>
+    private void OutputReport()
+    {
+        try
+        {
+            var dataSet = ScadaReadDataList.ConvertToDataSet();
+            var report = new Report();
+            // 加载报表模板
+            var path = $@"{Environment.CurrentDirectory}\Configs\report.frx";
+            report.Load(path);
+            report.RegisterData(dataSet);
+            // 准备
+            report.Prepare();
+            // 导出 PDF
+            var pdfExport = new PDFExport();
+            pdfExport.Export(report);
+            report.Dispose();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+    /// <summary>
+    /// 预览报表
+    /// </summary>
+    private void PreviewReport()
+    {
+        try
+        {
+            var dataSet = ScadaReadDataList.ConvertToDataSet();
+            var report = new Report();
+            // 加载报表模板
+            var path = $@"{Environment.CurrentDirectory}\Configs\report.frx";
+            report.Load(path);
+            report.RegisterData(dataSet);
+
+            // 准备
+            report.Prepare();
+            // 预览
+            report.ShowPrepared();
+            report.Dispose();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+    }
+
+
+
+
+    /// <summary>
+    /// 设计报表
+    /// </summary>
+    private void DesignReport()
+    {
+        try
+        {
+            var report = new Report();
+
+            // 加载报表模板
+            var path = $@"{Environment.CurrentDirectory}\Configs\report.frx";
+            report.Load(path);
+
+            // 报表设计   
+            report.Design();
+
+            // 导出 PDF
+            var pdfExport = new PDFExport();
+            pdfExport.Export(report);
+
+            report.Dispose();
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show(ex.Message);
+        }
+       
+    }
+
+    private void OutAll()
+    {
+        var List = SqlSugarHelper.Db.Queryable<ScadaReadData>().ToList();
+        SaveByMinniExcel(List);
+    }
+
+    private void OutPage()
+    {
+        SaveByMinniExcel<ScadaReadData>(ScadaReadDataList);
     }
 
     private void ExecuteLoad()
@@ -287,5 +409,30 @@ public class DataQueryViewModel : BindableBase
     }
 
 
+    private void SaveByMinniExcel<T>(List<T> list)
+    {
+        if (list.Count < 1)
+        {
+            return;
+        }
+
+        var rootPath = AppDomain.CurrentDomain.BaseDirectory+"\\Excels\\";
+        if (!Directory.Exists(rootPath))
+        {
+            Directory.CreateDirectory(rootPath);
+        }
+
+        var excelPath = rootPath + DateTime.Now.ToString("yyyyMMddHHmmss")+ ".xlsx";
+
+        try
+        {
+            MiniExcel.SaveAs(excelPath, list);
+            MessageBox.Show($"导出文件成功{excelPath}");
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"导出文件异常{ex.Message}");
+        }
+    }
 
 }

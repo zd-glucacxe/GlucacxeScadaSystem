@@ -28,7 +28,6 @@ namespace GlucacxeScadaSystem
             containerRegistry.RegisterSingleton<IndexViewModel>();
             containerRegistry.RegisterSingleton<ChartViewModel>();
             containerRegistry.RegisterSingleton<UserViewModel>();
-            containerRegistry.RegisterSingleton<ReportViewModel>();
             containerRegistry.RegisterSingleton<ParamsViewModel>();
             containerRegistry.RegisterSingleton<LogViewModel>();
             containerRegistry.RegisterSingleton<FormulaViewModel>();

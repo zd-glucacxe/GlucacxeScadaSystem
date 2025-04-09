@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Navigation;
 using GlucacxeScadaSystem.EventAggregator;
+using GlucacxeScadaSystem.Helpers;
 using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Services;
 using Prism.Commands;

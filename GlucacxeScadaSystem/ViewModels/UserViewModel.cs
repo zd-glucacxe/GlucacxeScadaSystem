@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Documents;
 using AngleSharp.Dom;
+using GlucacxeScadaSystem.Helpers;
 using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Services;
 using GlucacxeScadaSystem.Views;

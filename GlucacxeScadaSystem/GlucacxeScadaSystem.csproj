@@ -36,6 +36,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <None Update="Configs\appSettings.Json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Configs\report.frx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

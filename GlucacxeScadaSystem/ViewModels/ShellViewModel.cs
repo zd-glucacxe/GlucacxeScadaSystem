@@ -1,4 +1,5 @@
 ﻿using GlucacxeScadaSystem.EventAggregator;
+using GlucacxeScadaSystem.Helpers;
 using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Views;
 using Prism.Events;

@@ -1,8 +1,14 @@
-﻿using System.Windows;
+﻿using System;
+using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Services;
 using GlucacxeScadaSystem.ViewModels;
 using GlucacxeScadaSystem.Views;
+using Microsoft.Extensions.Configuration;
+using NLog;
+using NLog.Extensions.Logging;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
@@ -22,6 +28,10 @@ namespace GlucacxeScadaSystem
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
+
+            // 注册参数绑定对象
+            ConfigureJsonByBinder(containerRegistry);
+
             // 注册单例
             containerRegistry.RegisterSingleton<ShellViewModel>();
             containerRegistry.RegisterSingleton<LoginViewModel>();
@@ -57,6 +67,47 @@ namespace GlucacxeScadaSystem
             base.OnInitialized();
             var regionManager = Container.Resolve<IRegionManager>();
             regionManager.RequestNavigate("MainRegion", nameof(LoginView));
+        }
+
+
+        private void ConfigureJsonByBinder(IContainerRegistry containerRegistry)
+        {
+            var cfgBuilder = new ConfigurationBuilder()
+                .SetBasePath(System.IO.Path.Combine(Environment.CurrentDirectory, "Configs"))
+                .AddJsonFile("appSettings.json", optional: false, reloadOnChange: true);
+
+            var configuration = cfgBuilder.Build();
+
+            // 注册配置对象
+            var rootParam = new RootParam();
+            configuration.Bind(rootParam);
+            containerRegistry.RegisterInstance(rootParam);
+
+            // 注册 IConfiguration
+            containerRegistry.RegisterInstance<IConfiguration>(configuration);
+
+
+            // 参数配置及映射
+            containerRegistry.RegisterInstance(rootParam.SqlParam);
+            containerRegistry.RegisterInstance(rootParam.SystemParam);
+            containerRegistry.RegisterInstance(rootParam.PlcParam);
+
+
+            // 初始化日志
+            LogService.AddLog(configuration);
+
+            // 改造 SqlSugarHelper
+            var dbTypeRes = Enum.TryParse<SqlSugar.DbType>(configuration["SqlParam:DbType"], out var dbType);
+            var connectionStringRes = configuration["SqlParam:ConnectionString"];
+
+            if (dbTypeRes)
+            {
+                SqlSugarHelper.AddSqlSugarSetup(dbType, connectionStringRes);
+            }
+
+
+           
+           
         }
 
 

@@ -1,53 +1,52 @@
 ﻿<UserControl x:Class="GlucacxeScadaSystem.UserControls.Dialog"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:GlucacxeScadaSystem.UserControls"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
-             xmlns:materialDesign="clr-namespace:MaterialDesignThemes.Wpf;assembly=MaterialDesignThemes.Wpf"
-             Width="400" MinHeight="180">
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="400">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-    <Border CornerRadius="12" Padding="20" Background="White"
-            md:ElevationAssist.Elevation="Elevation2">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
+        <TextBlock x:Name="TextBlock" Margin="15" HorizontalAlignment="Center"
+                   VerticalAlignment="Center" TextWrapping="Wrap"/>
 
-            <TextBlock Text="提示"
-                       FontSize="18"
-                       FontWeight="Bold"
-                       Foreground="#333"
-                       Margin="0 0 0 12" />
+        <StackPanel Grid.Row="1" x:Name="StackPanelOk" Visibility="Collapsed">
+            <Button Content="确定" Margin="15"
+                    HorizontalAlignment="Center" IsCancel="True"
+                    Style="{StaticResource MaterialDesignFlatLightButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}"/>
+        </StackPanel>
 
-            <TextBlock x:Name="TextBlock"
-                       Grid.Row="1"
-                       TextWrapping="Wrap"
-                       FontSize="15"
-                       Foreground="#555"
-                       TextAlignment="Left"/>
+        <StackPanel Grid.Row="1" x:Name="StackPanelYesOrNo" Visibility="Collapsed" Orientation="Horizontal"
+                    Margin="15">
+            <Button Content="确定" Margin="15"
+                    HorizontalAlignment="Center" IsCancel="True" IsDefault="True"
+                    Style="{StaticResource MaterialDesignFlatLightButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
 
-            <StackPanel Grid.Row="2" Orientation="Horizontal"
-                        HorizontalAlignment="Right" Margin="0 20 0 0"
-                        x:Name="ButtonPanel">
-                <Button Content="确定"
-                        Margin="0 0 10 0"
-                        Style="{DynamicResource MaterialDesignElevatedButton}"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
-                    <Button.CommandParameter>
-                        <system:Boolean>True</system:Boolean>
-                    </Button.CommandParameter>
-                </Button>
+                <Button.CommandParameter>
+                    <system:Boolean>True</system:Boolean>
+                </Button.CommandParameter>
 
-                <Button Content="取消"
-                        Style="{DynamicResource MaterialDesignTextButton}"
-                        Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
-                    <Button.CommandParameter>
-                        <system:Boolean>False</system:Boolean>
-                    </Button.CommandParameter>
-                </Button>
-            </StackPanel>
-        </Grid>
-    </Border>
+            </Button>
+
+            <Button Content="取消" Margin="15"
+                    HorizontalAlignment="Center" IsCancel="True" IsDefault="False"
+                    Style="{StaticResource MaterialDesignFlatLightButton}"
+                    Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}">
+
+                <Button.CommandParameter>
+                    <system:Boolean>False</system:Boolean>
+                </Button.CommandParameter>
+            </Button>
+        </StackPanel>
+
+    </Grid>
 </UserControl>

@@ -8,7 +8,7 @@ namespace GlucacxeScadaSystem.Services;
 
 public class UserSession : BindableBase
 {
-    private User _user = new User(){UserName = "test", PassWord = "test"};
+    private User _user = new User() { UserName = "test", PassWord = "test" };
 
     public User CurrentUser
     {

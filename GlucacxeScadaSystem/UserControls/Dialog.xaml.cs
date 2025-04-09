@@ -1,5 +1,4 @@
-﻿using MaterialDesignThemes.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -26,46 +25,24 @@ namespace GlucacxeScadaSystem.UserControls
             InitializeComponent();
         }
 
+        /// <summary>
+        /// 选择性传入一个按钮类型，用于控制对话框上显示哪些按钮
+        /// </summary>
+        /// <param name="content">对话框显示的内容</param>
+        /// <param name="button">指定要显示哪些按钮</param>
         public Dialog(string content, MessageBoxButton button = MessageBoxButton.OK)
         {
             InitializeComponent();
             TextBlock.Text = content;
 
-            ButtonPanel.Children.Clear();
-
-            if (button == MessageBoxButton.OK)
+            if (button == MessageBoxButton.YesNo)
             {
-                ButtonPanel.Children.Add(CreateButton("确定", true));
+                StackPanelYesOrNo.Visibility = Visibility.Visible;
             }
-            else if (button == MessageBoxButton.OKCancel)
+            else
             {
-                ButtonPanel.Children.Add(CreateButton("确定", true));
-                ButtonPanel.Children.Add(CreateButton("取消", false));
-            }
-            else if (button == MessageBoxButton.YesNo)
-            {
-                ButtonPanel.Children.Add(CreateButton("是", true));
-                ButtonPanel.Children.Add(CreateButton("否", false));
-            }
-            else if (button == MessageBoxButton.YesNoCancel)
-            {
-                ButtonPanel.Children.Add(CreateButton("是", true));
-                ButtonPanel.Children.Add(CreateButton("否", false));
-                ButtonPanel.Children.Add(CreateButton("取消", null));
+                StackPanelOk.Visibility = Visibility.Visible;
             }
         }
-
-        private Button CreateButton(string text, object result)
-        {
-            return new Button
-            {
-                Content = text,
-                Margin = new Thickness(5, 0, 0, 0),
-                Style = (Style)FindResource("MaterialDesignContainedButton"),
-                Command = DialogHost.CloseDialogCommand,
-                CommandParameter = result
-            };
-        }
-
     }
 }

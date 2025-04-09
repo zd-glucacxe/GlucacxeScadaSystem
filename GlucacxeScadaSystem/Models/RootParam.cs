@@ -1,10 +1,11 @@
 ﻿using HslCommunication.Profinet.Siemens;
 using System.Collections.Generic;
+using Prism.Mvvm;
 using SqlSugar;
 
 namespace GlucacxeScadaSystem.Models;
 
-public class RootParam
+public class RootParam : BindableBase
 {
     public SqlParam SqlParam { get; set; }
     public SystemParam SystemParam { get; set; }
@@ -23,7 +24,7 @@ public class SqlParam
     public string ConnectionString { get; set; }
 }
 
-public class PlcParam
+public class PlcParam : BindableBase
 {
     /// <summary>
     /// PlcIp 地址

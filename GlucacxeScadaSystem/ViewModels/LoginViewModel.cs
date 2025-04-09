@@ -36,8 +36,6 @@ public class LoginViewModel : BindableBase
     }
 
  
-
-
     private string _username = "user";
     public string Username
     {

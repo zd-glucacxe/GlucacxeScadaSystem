@@ -7,10 +7,117 @@
              xmlns:viewModels="clr-namespace:GlucacxeScadaSystem.ViewModels"
              xmlns:mvvm="http://prismlibrary.com/"
              mvvm:ViewModelLocator.AutoWireViewModel="True"
-             d:DataContext="{d:DesignInstance viewModels:ParamsViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DataContext="{d:DesignInstance viewModels:ParamsViewModel}"
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource MaterialDesign.Brush.Background}"
+             FontFamily="Microsoft YaHei"
+             FontSize="16"
+             TextElement.FontSize="16"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+           >
     <Grid>
-            
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Column="0" BorderBrush="#546e7a" BorderThickness="1">
+            <StackPanel>
+                <Button Content="保存参数" Style="{DynamicResource MyButtonStyle}"/>
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="IP地址：" Margin="5"/>
+                        <TextBox Width="150" Margin="5" Text="{Binding RootParam.PlcParam.PlcIp}"
+                             TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="PLC类型：" Margin="5"/>
+                        <TextBox Width="150" Margin="5" Text="{Binding RootParam.PlcParam.PlcType}"
+                                 TextAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="端口号：" Margin="5"/>
+                        <TextBox Width="150" Margin="5" Text="{Binding RootParam.PlcParam.PlcPort}"
+                                 TextAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="超时时间：" Margin="5"/>
+                        <TextBox Width="150" Margin="5" Text="{Binding RootParam.PlcParam.PlcConnectTimeOut}"
+                                 TextAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="循环间隔：" Margin="5"/>
+                        <TextBox Width="150" Margin="5" Text="{Binding RootParam.PlcParam.PlcCycleInterval}"
+                                 TextAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="自动采集：" Margin="5"/>
+                        <ToggleButton Width="80" Margin="5" 
+                                  IsChecked="{Binding RootParam.PlcParam.AutoCollect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                  ToolTip="自动采集开关"/>
+                    </StackPanel>
+                    <Rectangle Width="75"/>
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="自动模拟：" Margin="5"/>
+                        <ToggleButton Width="80" Margin="5"  
+                                  IsChecked="{Binding RootParam.PlcParam.AutoMock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                  ToolTip="自动模拟开关"/>
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+        </Border>
+
+
+        <Border Grid.Column="1" BorderBrush="#546e7a" BorderThickness="1">
+            <StackPanel>
+                <Button Content="保存系统参数" Style="{DynamicResource MyButtonStyle}"/>
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="软件授权：" Margin="5"/>
+                        <TextBox Width="420" Margin="5" Text="{Binding RootParam.SystemParam.AuthCode}"
+                     TextAlignment="Center"/>
+                    </StackPanel>
+                </StackPanel>
+
+
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="自动清除：" Margin="5"/>
+                        <ToggleButton Width="80" Margin="5" 
+                          IsChecked="{Binding RootParam.SystemParam.AutoClearLog, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                          Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                          ToolTip="自动清除日志开关"/>
+                    </StackPanel>
+                    <Rectangle Width="75"/>
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="清除天数：" Margin="5"/>
+                        <TextBox Width="145" Margin="5"  
+                                 Text="{Binding RootParam.SystemParam.AutoClearDay}"
+                                />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+
+        </Border>
     </Grid>
 </UserControl>

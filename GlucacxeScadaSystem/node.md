@@ -53,8 +53,8 @@ TextElement.Foreground="{DynamicResource MaterialDesignBody}"
 ## 日志及参数配置
 ```C#
   //测试日志功能和参数获取
-    private readonly ILogger<MainViewModel> _logger;
-    private RootParam RootParamProp;
+  private static readonly Logger _logger = LogManager.GetCurrentClassLogger(); // 直接使用 
+  private readonly RootParam _rootParam;  //DI
 ```
 ## Bool 转 string
 ```xml
@@ -119,7 +119,7 @@ namespace GlucacxeScadaSystem.Services
     }
 }
 
-``` 
+```
 ## NLog 配置示例
 ``` json
 "NLog": {

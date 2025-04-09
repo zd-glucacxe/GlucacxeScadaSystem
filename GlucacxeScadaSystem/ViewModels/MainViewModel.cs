@@ -95,8 +95,6 @@ public class MainViewModel : BindableBase
     private void OnUserLoggedIn(User user)
     {
         CurrentUser = user;
-
-       
     }
 
 }

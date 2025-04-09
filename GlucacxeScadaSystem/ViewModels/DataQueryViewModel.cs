@@ -16,6 +16,9 @@ namespace GlucacxeScadaSystem.ViewModels;
 
 public class DataQueryViewModel : BindableBase
 {
+
+    private readonly UserSession _userSession;
+
     List<ScadaReadData> _scadaReadDataList = new();
     public List<ScadaReadData> ScadaReadDataList
     {
@@ -124,8 +127,10 @@ public class DataQueryViewModel : BindableBase
 
 
 
-    public DataQueryViewModel()
+    public DataQueryViewModel(UserSession userSession)
     {
+        _userSession = userSession;
+
         LoadCommand = new DelegateCommand(ExecuteLoad);
         SearchCommand = new DelegateCommand(ExecuteSearch);
         ResetCommand = new DelegateCommand(ExecuteReset);
@@ -183,8 +188,8 @@ public class DataQueryViewModel : BindableBase
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message);
-        }
+           _userSession.ShowMessageBox(ex.Message);
+        } 
     }
 
     /// <summary>
@@ -209,7 +214,7 @@ public class DataQueryViewModel : BindableBase
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message);
+            _userSession.ShowMessageBox(ex.Message);
         }
     }
 
@@ -240,7 +245,7 @@ public class DataQueryViewModel : BindableBase
         }
         catch (Exception ex)
         {
-            MessageBox.Show(ex.Message);
+            _userSession.ShowMessageBox(ex.Message);
         }
        
     }
@@ -341,11 +346,11 @@ public class DataQueryViewModel : BindableBase
     // --- 数据获取逻辑 ---
     private void Search()
     {
-
+        //_userSession.ShowMessageBox(ex.Message);
         // 1. 输入验证
         if (StartTime > EndTime)
         {
-            MessageBox.Show("开始时间不能大于结束时间！", "输入错误", MessageBoxButton.OK, MessageBoxImage.Warning);
+            _userSession.ShowMessageBox("开始时间不能大于结束时间！");
             return; // 停止搜索
         }
 
@@ -389,7 +394,7 @@ public class DataQueryViewModel : BindableBase
         {
             // 6. 错误处理
             System.Diagnostics.Debug.WriteLine($"搜索过程中发生错误: {ex}");
-            MessageBox.Show($"查询数据时出错: {ex.Message}", "数据库错误", MessageBoxButton.OK, MessageBoxImage.Error);
+            _userSession.ShowMessageBox($"查询数据时出错: {ex.Message}");
             // 出错时重置状态
             ScadaReadDataList = new List<ScadaReadData>(); // 清空列表
             TotalPages = 1; // 重置总页数
@@ -426,11 +431,11 @@ public class DataQueryViewModel : BindableBase
         try
         {
             MiniExcel.SaveAs(excelPath, list);
-            MessageBox.Show($"导出文件成功{excelPath}");
+            _userSession.ShowMessageBox($"导出文件成功{excelPath}");
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"导出文件异常{ex.Message}");
+            _userSession.ShowMessageBox($"导出文件异常{ex.Message}");
         }
     }
 

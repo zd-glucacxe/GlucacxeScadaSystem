@@ -12,12 +12,13 @@ using MaterialDesignThemes.Wpf;
 using Prism.Commands;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
+using Dialog = GlucacxeScadaSystem.UserControls.Dialog;
 
 namespace GlucacxeScadaSystem.ViewModels;
 
 public class UserViewModel : BindableBase
 {
-    public UserSession UserSession { get; }
+    public UserSession _userSession { get; }
 
     List<User> _userList = new();
     public List<User> UserList
@@ -38,7 +39,7 @@ public class UserViewModel : BindableBase
 
     public UserViewModel(UserSession userSession)
     {
-        UserSession = userSession;
+        _userSession = userSession;
         LoadCommand = new DelegateCommand(Load);
         SearchUserCommand = new DelegateCommand(SearchUser);
         AddUserCommand = new DelegateCommand(AddUser);
@@ -53,15 +54,15 @@ public class UserViewModel : BindableBase
     /// <param name="user"></param>
     private async void EditUser(User user)
     {
-        if (UserSession.CurrentUser.Role != 0)
+        if (_userSession.CurrentUser.Role != 0)
         {
-            MessageBox.Show("非管理员，无权限");
+            _userSession.ShowMessageBox("非管理员，无权限");
             return;
         }
 
         //if (UserSession.CurrentUser.UserName == user.UserName)
         //{
-        //    MessageBox.Show("你不能修改自己！");
+        //    _userSession.ShowMessageBox("你不能修改自己！");
         //    return;
         //}
 
@@ -83,7 +84,7 @@ public class UserViewModel : BindableBase
             if (count > 0)
             {
                 SearchUser();
-                MessageBox.Show("修改成功！");
+                _userSession.ShowMessageBox("修改成功！");
             }
         }
 
@@ -93,28 +94,30 @@ public class UserViewModel : BindableBase
     /// 删除用户
     /// </summary>
     /// <param name="user"></param>
-    private void DeleteUser(User user)
+    private async void DeleteUser(User user)
     {
-        if (UserSession.CurrentUser.Role != 0)
+        if (_userSession.CurrentUser.Role != 0)
         {
-            MessageBox.Show("非管理员，无权限");
+            _userSession.ShowMessageBox("非管理员，无权限");
             return;
         }
 
-        if (UserSession.CurrentUser.UserName == user.UserName)
+        if (_userSession.CurrentUser.UserName == user.UserName)
         {
-            MessageBox.Show("不能删除自己！");
+            _userSession.ShowMessageBox("不能删除自己！");
             return;
         }
 
-        var res = MessageBox.Show("是否删除", "提示", MessageBoxButton.OKCancel);
-        if (res == MessageBoxResult.OK)
+        var res = (bool) await DialogHost.Show(new Dialog("是否删除", MessageBoxButton.YesNo), "ShellDialog");
+
+      
+        if (res)
         {
             int count = SqlSugarHelper.Db.Deleteable<User>().Where(it => it.Id == user.Id).ExecuteCommand();
             if (count > 0)
             {
                 SearchUser();
-                MessageBox.Show("删除成功");
+                _userSession.ShowMessageBox("删除成功");
             }
         }
     }
@@ -126,9 +129,9 @@ public class UserViewModel : BindableBase
     {
         try
         {
-            if (UserSession.CurrentUser.Role != 0)
+            if (_userSession.CurrentUser.Role != 0)
             {
-                MessageBox.Show("非管理员，无权限");
+                _userSession.ShowMessageBox("非管理员，无权限");
                 return;
             }
             // 给弹窗添加上下文 其中Entity 就是User
@@ -143,13 +146,13 @@ public class UserViewModel : BindableBase
                 if (count > 0)
                 {
                     SearchUser();
-                    MessageBox.Show("添加成功！");
+                    _userSession.ShowMessageBox("添加成功！");
                 }
             }
         }
         catch (Exception ex)
         {
-            MessageBox.Show("添加失败！" + ex.Message);
+            _userSession.ShowMessageBox("添加失败！" + ex.Message);
         }
         
     }

@@ -24,7 +24,7 @@ public static class LogService
 
         try
         {
-            // 使用 appsettings.json 中的 "NLog" 配置节
+            // 使用 appsettings.json 中的 "NLog" 配置
             LogManager.Configuration = new NLogLoggingConfiguration(configuration.GetSection("NLog"));
 
             Logger = LogManager.GetCurrentClassLogger();

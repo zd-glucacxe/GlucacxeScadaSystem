@@ -14,7 +14,7 @@ namespace GlucacxeScadaSystem.ViewModels;
 
 public class LoginViewModel : BindableBase
 {
-    public UserSession UserSession { get; }
+    public UserSession _userSession { get; }
 
 
     private readonly IEventAggregator _eventAggregator;
@@ -26,7 +26,7 @@ public class LoginViewModel : BindableBase
     {
 
         //InitData();
-        UserSession = userSession;
+        _userSession = userSession;
         _eventAggregator = eventAggregator;
         _regionManager = IregionManager;  // ② 依赖注入 RegionManager
 
@@ -58,7 +58,7 @@ public class LoginViewModel : BindableBase
     {
         if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
         {
-            MessageBox.Show("用户名或密码为空！");
+            _userSession.ShowMessageBox("用户名或密码为空！");
             return;
         }
 
@@ -68,13 +68,13 @@ public class LoginViewModel : BindableBase
 
         if (userRes.Count == 0)
         {
-            MessageBox.Show("用户名或密码错误！");
+            _userSession.ShowMessageBox("用户名或密码错误！");
         }
         else
         {
             // 将登录的用户信息存入UserSession
             // ④ 存储登录用户信息
-            UserSession.CurrentUser = userRes[0];
+            _userSession.CurrentUser = userRes[0];
             
             // 跳转到首页
             // ⑤ 发布事件，通知 MainViewModel 订阅者

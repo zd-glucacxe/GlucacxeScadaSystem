@@ -70,6 +70,9 @@ namespace GlucacxeScadaSystem
         }
 
 
+        /// <summary>
+        /// 读取Json配置文件
+        /// </summary>
         private void ConfigureJsonByBinder(IContainerRegistry containerRegistry)
         {
             var cfgBuilder = new ConfigurationBuilder()

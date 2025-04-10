@@ -413,7 +413,7 @@ public class DataQueryViewModel : BindableBase
     }
 
 
-    private void SaveByMinniExcel<T>(List<T> list)
+    private void SaveByMinniExcel<T>(List<T> list) where T : class
     {
         if (list.Count < 1)
         {

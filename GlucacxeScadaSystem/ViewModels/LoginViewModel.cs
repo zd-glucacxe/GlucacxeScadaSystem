@@ -5,17 +5,16 @@ using GlucacxeScadaSystem.EventAggregator;
 using GlucacxeScadaSystem.Helpers;
 using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Services;
-using Prism.Commands;
-using Prism.Events;
-using Prism.Mvvm;
-using Prism.Regions;
-
-namespace GlucacxeScadaSystem.ViewModels;
-
+using Prism.Commands;                                     
+using Prism.Events;                                       
+using Prism.Mvvm;                                         
+using Prism.Regions;                                      
+                                                          
+namespace GlucacxeScadaSystem.ViewModels;                 
+                                                          
 public class LoginViewModel : BindableBase
 {
     public UserSession _userSession { get; }
-
 
     private readonly IEventAggregator _eventAggregator;
     private readonly IRegionManager _regionManager; // ① 添加 RegionManager 进行导航
@@ -31,7 +30,6 @@ public class LoginViewModel : BindableBase
         _regionManager = IregionManager;  // ② 依赖注入 RegionManager
 
         LoginCommand = new DelegateCommand(OnLogin);
-
        
     }
 

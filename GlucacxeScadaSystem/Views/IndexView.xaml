@@ -12,6 +12,7 @@
              
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:userControls="clr-namespace:GlucacxeScadaSystem.UserControls"
              d:DesignHeight="800"
              d:DesignWidth="1200"
              Background="{DynamicResource MaterialDesign.Brush.Background}"
@@ -21,6 +22,420 @@
              TextElement.FontWeight="Regular"
              TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <Grid>
-        <TextBlock Text="This is indexView" FontSize="60"/>
+        <Grid.Background>
+            <ImageBrush ImageSource="../Images/bg.png"/>
+        </Grid.Background>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+
+        <Border Grid.Row="0" Grid.ColumnSpan="3" BorderBrush="#87ceeb" BorderThickness="0,0,0,1"/>
+
+        <!--温湿度-->
+        <StackPanel Grid.Row="0" Grid.Column="0" Margin="0,5,0,0" TextElement.FontSize="14">
+            <StackPanel  Orientation="Horizontal">
+                <materialDesign:PackIcon Width="20"
+                                         Height="20"
+                                         Background="Transparent"
+                                         Margin="0,0,5,0" Foreground="White"
+                                         VerticalAlignment="Center" Kind="TemperatureCentigrade"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="厂房温度："
+                          />
+
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="25"
+                />
+            </StackPanel>
+
+            <StackPanel  Orientation="Horizontal" Margin="0,8,0,0">
+                <materialDesign:PackIcon Width="20"
+                                         Height="20"
+                                         Background="Transparent"
+                                         Margin="0,0,5,0" Foreground="White"
+                                         VerticalAlignment="Center" Kind="Humidity"/>
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="厂房湿度："
+                />
+
+                <TextBlock  HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="65"
+                />
+            </StackPanel>
+        </StackPanel>
+
+        <!--中央看板文字-->
+        <StackPanel Grid.Row="0" Grid.Column="1">
+            <TextBlock Margin="15" HorizontalAlignment="Center" FontSize="20" Foreground="White"
+                       Text="喷涂工艺SCADA生产系统看板"/>
+
+        </StackPanel>
+
+
+        <!--系统状态-->
+        <StackPanel Grid.Row="0" Grid.Column="2" Margin="0,5,0,0">
+            <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right">
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="系统状态："
+                />
+                <materialDesign:PackIcon Width="20"
+                                         Height="20"
+                                         Margin="0,0,5,0" 
+                                         Background="Transparent"
+                                         Foreground="Green"
+                                         VerticalAlignment="Center" Kind="AlarmLight"
+                                         />
+
+            </StackPanel>
+
+
+            <StackPanel  Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,8,0,0">
+                <TextBlock HorizontalAlignment="Center" 
+                           VerticalAlignment="Center"
+                           Foreground="White"
+                           Style="{StaticResource MaterialDesignTitleSmallTextBlock}"
+                           Text="连接状态："
+                />
+                <materialDesign:PackIcon Width="20"
+                                         Height="20"
+                                         Margin="0,0,5,0" 
+                                         Background="Transparent"
+                                         Foreground="Red"
+                                         VerticalAlignment="Center" Kind="Aed"
+                />
+            </StackPanel>
+
+        </StackPanel>
+
+
+        <!--左侧状态工位-->
+        <Grid Grid.Row="1" Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+
+            <Border Margin="2,5,0,0" Grid.Row="0" Grid.ColumnSpan="1" BorderBrush="#87ceeb" BorderThickness="1">
+                <StackPanel TextElement.Foreground="White">
+                    <TextBlock Text="脱脂工位" HorizontalAlignment="Center" FontSize="20"/>
+                    <userControls:StatusIndicatorControl ButtonBackground="Green" 
+                                                         IsIndeterminate="True"
+                                                         StatusText="脱脂喷淋泵运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="脱脂排风扇运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="脱脂低液位运行状态"/>
+                </StackPanel>
+
+            </Border>
+
+
+            <Border Margin="2,5,0,0" Grid.Row="1" Grid.ColumnSpan="1" BorderBrush="#87ceeb" BorderThickness="1">
+                <StackPanel TextElement.Foreground="White">
+                    <TextBlock Text="粗洗工位" HorizontalAlignment="Center" FontSize="20"/>
+                    <userControls:StatusIndicatorControl ButtonBackground="Green" 
+                                                         IsIndeterminate="True"
+                                                         StatusText="粗洗喷淋泵运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="粗洗喷淋泵过载状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="粗洗喷淋泵低液位报警"/>
+                </StackPanel>
+
+            </Border>
+
+
+            <Border Margin="2,5,0,0" Grid.Row="2" Grid.ColumnSpan="1" BorderBrush="#87ceeb" BorderThickness="1">
+                <StackPanel TextElement.Foreground="White">
+                    <TextBlock Text="陶化工位" HorizontalAlignment="Center" FontSize="20"/>
+                    <userControls:StatusIndicatorControl ButtonBackground="Green" 
+                                                         IsIndeterminate="True"
+                                                         StatusText="陶化喷淋泵运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="陶化排风扇运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="陶化喷淋泵过载状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="陶化低液位运行状态"/>
+                </StackPanel>
+
+            </Border>
+
+
+            <Border Margin="2,5,0,0" Grid.Row="3" Grid.ColumnSpan="1" BorderBrush="#87ceeb" BorderThickness="1">
+                <StackPanel TextElement.Foreground="White">
+                    <TextBlock Text="精洗工位" HorizontalAlignment="Center" FontSize="20"/>
+                    <userControls:StatusIndicatorControl ButtonBackground="Green" 
+                                                         IsIndeterminate="True"
+                                                         StatusText="精洗喷淋泵运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="精洗排风扇运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                         IsIndeterminate="False"
+                                                         StatusText="精洗低液位运行状态"/>
+                </StackPanel>
+
+            </Border>
+        </Grid>
+
+
+        <!--中央产线信息-->
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1.1*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Margin="2,5,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+               <Grid>
+                   <Grid.RowDefinitions>
+                       <RowDefinition/>
+                       <RowDefinition/>
+                   </Grid.RowDefinitions>
+
+                   <Grid.ColumnDefinitions>
+                       <ColumnDefinition/>
+                       <ColumnDefinition/>
+                       <ColumnDefinition/>
+                   </Grid.ColumnDefinitions>
+
+                    <Border Grid.Row="0" Grid.Column="0" Margin="2,0,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+                        <StackPanel TextElement.Foreground="White" TextElement.FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <TextBlock Margin="10" Text="计划产量"/>
+                            <TextBlock Margin="10" Text="5000" TextAlignment="Center"/>
+                        </StackPanel>
+                   </Border>
+
+                   <Border Grid.Row="0" Grid.Column="0" Margin="2,0,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+                       <StackPanel TextElement.Foreground="White" TextElement.FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                           <TextBlock Margin="10" Text="计划产量"/>
+                           <TextBlock Margin="10" Text="5000" TextAlignment="Center"/>
+                       </StackPanel>
+                    </Border>
+
+                   <Border Grid.Row="0" Grid.Column="1" Margin="2,0,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+                       <StackPanel TextElement.Foreground="White" TextElement.FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                           <TextBlock Margin="10" Text="实际产量"/>
+                           <TextBlock Margin="10" Text="5000" TextAlignment="Center"/>
+                       </StackPanel>
+                    </Border>
+
+                   <Border Grid.Row="0" Grid.Column="2" Margin="2,0,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+                       <StackPanel TextElement.Foreground="White" TextElement.FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                           <TextBlock Margin="10" Text="不良计数"/>
+                           <TextBlock Margin="10" Text="5000" TextAlignment="Center"/>
+                       </StackPanel>
+                    </Border>
+
+                   <Border Grid.Row="1" Grid.Column="0" Margin="2,0,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+                       <StackPanel TextElement.Foreground="White" TextElement.FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                           <TextBlock Margin="10" Text="生产节拍"/>
+                           <TextBlock Margin="10" Text="5000" TextAlignment="Center"/>
+                       </StackPanel>
+                    </Border>
+
+                   <Border Grid.Row="1" Grid.Column="1" Margin="2,0,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+                       <StackPanel TextElement.Foreground="White" TextElement.FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                           <TextBlock Margin="10" Text="累计报警"/>
+                           <TextBlock Margin="10" Text="5000" TextAlignment="Center"/>
+                       </StackPanel>
+                    </Border>
+                    
+                   <Border Grid.Row="1" Grid.Column="2" Margin="2,0,0,0" BorderBrush="#87ceeb"  BorderThickness="1">
+                       <StackPanel TextElement.Foreground="White" TextElement.FontSize="30" HorizontalAlignment="Center" VerticalAlignment="Center">
+                           <TextBlock Margin="10" Text="累计产量"/>
+                           <TextBlock Margin="10" Text="5000" TextAlignment="Center"/>
+                       </StackPanel>
+                    </Border>
+                </Grid>
+            </Border>
+
+
+            <Border Grid.Row="1" BorderBrush="#87ceeb" BorderThickness="1" Margin="2,5,0,0">
+                <Image Source="../Images/pt.gif" Stretch="Fill"/>
+            </Border>
+
+
+
+
+</Grid>
+
+
+
+        <!--右侧状态工位-->
+        <Grid Grid.Row="1" Grid.Column="2">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+                <RowDefinition/>
+
+            </Grid.RowDefinitions>
+
+            <Border Margin="2,5,0,0" Grid.Row="0" Grid.ColumnSpan="1" BorderBrush="#87ceeb" BorderThickness="1">
+                <StackPanel TextElement.Foreground="White">
+                    <TextBlock Text="水分炉工位" HorizontalAlignment="Center" FontSize="20"/>
+                    <userControls:StatusIndicatorControl ButtonBackground="Green" 
+                                                  IsIndeterminate="True"
+                                                  StatusText="水分炉变频器运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                  IsIndeterminate="False"
+                                                  StatusText="水分炉风机运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                  IsIndeterminate="False"
+                                                  StatusText="水分炉温度报警"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                  IsIndeterminate="False"
+                                                  StatusText="水分炉煤气泄露报警"/>
+
+                </StackPanel>
+            </Border>
+
+
+            <Border Margin="2,5,0,0" Grid.Row="1" Grid.ColumnSpan="1" BorderBrush="#87ceeb" BorderThickness="1">
+                <StackPanel TextElement.Foreground="White">
+                    <TextBlock Text="固化炉工位" HorizontalAlignment="Center" FontSize="20"/>
+                    <userControls:StatusIndicatorControl ButtonBackground="Green" 
+                                                  IsIndeterminate="True"
+                                                  StatusText="固化炉变频器运行状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                  IsIndeterminate="False"
+                                                  StatusText="固化炉风机状态"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                  IsIndeterminate="False"
+                                                  StatusText="固化炉煤气泄露报警"/>
+
+                    <userControls:StatusIndicatorControl ButtonBackground="Red" 
+                                                  IsIndeterminate="False"
+                                                  StatusText="固化炉燃烧机状态"/>
+                </StackPanel>
+            </Border>
+
+
+            <!--参数监控-->
+            <Border Margin="2,5,0,0" Grid.Row="2" Grid.ColumnSpan="1" BorderBrush="#87ceeb" BorderThickness="1">
+                <StackPanel TextElement.Foreground="White">
+                    <TextBlock Text="参数监控" HorizontalAlignment="Center" FontSize="20"/>
+
+                    <!--可以根据控件内容自动缩放控件-->
+                    <UniformGrid>
+                        <StackPanel Margin="0,0,5,0">
+                            <Button
+                                Height="50"
+                                materialDesign:ButtonAssist.CornerRadius="25 25 0 0"
+                                ToolTip="MaterialDesignRaisedAccentButton with Round Top Corners">
+                                <TextBlock 
+                                    Text="25/50 Radius"/>
+                            </Button>
+                            <TextBlock Text="脱脂压力值" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,5,0">
+                            <Button
+                                Height="50"
+                                materialDesign:ButtonAssist.CornerRadius="25 25 0 0"
+                                ToolTip="MaterialDesignRaisedAccentButton with Round Top Corners">
+                                <TextBlock 
+                                    Text="25/50 Radius"/>
+                            </Button>
+                            <TextBlock Text="脱脂PH值" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,5,0">
+                            <Button
+                                Height="50"
+                                materialDesign:ButtonAssist.CornerRadius="25 25 0 0"
+                                ToolTip="MaterialDesignRaisedAccentButton with Round Top Corners">
+                                <TextBlock 
+                                    Text="25/50 Radius"/>
+                            </Button>
+                            <TextBlock Text="粗细压力值" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,5,0">
+                            <Button
+                                Height="50"
+                                materialDesign:ButtonAssist.CornerRadius="25 25 0 0"
+                                ToolTip="MaterialDesignRaisedAccentButton with Round Top Corners">
+                                <TextBlock 
+                                    Text="25/50 Radius"/>
+                            </Button>
+                            <TextBlock Text="陶化压力值" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,5,0">
+                            <Button
+                                Height="50"
+                                materialDesign:ButtonAssist.CornerRadius="25 25 0 0"
+                                ToolTip="MaterialDesignRaisedAccentButton with Round Top Corners">
+                                <TextBlock 
+                                    Text="25/50 Radius"/>
+                            </Button>
+                            <TextBlock Text="陶化PH值" HorizontalAlignment="Center"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="0,0,5,0">
+                            <Button
+                                Height="50"
+                                materialDesign:ButtonAssist.CornerRadius="25 25 0 0"
+                                ToolTip="MaterialDesignRaisedAccentButton with Round Top Corners">
+                                <TextBlock 
+                                    Text="25/50 Radius"/>
+                            </Button>
+                            <TextBlock Text="水分炉温度值" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </UniformGrid>
+                </StackPanel>
+
+            </Border>
+        </Grid>
+
+
+
     </Grid>
 </UserControl>

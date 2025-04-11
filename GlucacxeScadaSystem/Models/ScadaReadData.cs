@@ -4,6 +4,9 @@ using SqlSugar;
 
 namespace GlucacxeScadaSystem.Models;
 
+/// <summary>
+/// 与Excel表中的数据一一
+/// </summary>
 public class ScadaReadData: EntityBase
 {
     #region Control 设备状态

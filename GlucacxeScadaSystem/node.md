@@ -42,7 +42,7 @@ TextElement.Foreground="{DynamicResource MaterialDesignBody}"
                            Text="喷涂工艺SCADA系统"/>
 </StackPanel>   
 ```
-## ListView 绑定
+## ListView 绑定  事件转命令
 ```xml
    <i:Interaction.Triggers>
                  <i:EventTrigger EventName="PreviewMouseUp">

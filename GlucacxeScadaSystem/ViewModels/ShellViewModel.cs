@@ -7,6 +7,8 @@ using Prism.Mvvm;
 using Prism.Regions;
 using System;
 using System.Collections.Generic;
+using NLog;
+using HslCommunication.Profinet.Siemens;
 
 namespace GlucacxeScadaSystem.ViewModels;
 
@@ -14,6 +16,8 @@ public class ShellViewModel : BindableBase
 {
     private readonly IRegionManager _regionManager;
     private readonly IEventAggregator _eventAggregator;
+    private static readonly ILogger _logger = LogManager.GetCurrentClassLogger();
+    private SiemensS7Server _simulatedServer;
 
     public ShellViewModel(IRegionManager regionManager, IEventAggregator eventAggregator)
     {
@@ -23,8 +27,21 @@ public class ShellViewModel : BindableBase
         _eventAggregator = eventAggregator;
 
         _eventAggregator.GetEvent<ChangUserEvent>().Subscribe(RedirectToLoginView);
+
+        InitSiemensPlcServer();
     }
-    
+
+    private void InitSiemensPlcServer()
+    {
+        HslCommunication.Authorization.SetAuthorizationCode("d1c914f5-2159-49f0-9c7e-2a6c5cd29e55");
+        _logger.Info($"开始仿真西门子Plc-1200 at {DateTime.Now}");
+        //打开西门子模拟串口
+        _simulatedServer = new HslCommunication.Profinet.Siemens.SiemensS7Server();
+        _simulatedServer.ServerStart(102);
+    }
+
+
+
     private void RedirectToLoginView()
     {
         if (_regionManager.Regions.ContainsRegionWithName("MainRegion"))

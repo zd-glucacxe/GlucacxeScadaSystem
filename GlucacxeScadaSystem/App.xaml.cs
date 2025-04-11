@@ -2,6 +2,7 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using GlucacxeScadaSystem.Helpers;
 using GlucacxeScadaSystem.Models;
 using GlucacxeScadaSystem.Services;
 using GlucacxeScadaSystem.ViewModels;
@@ -48,6 +49,10 @@ namespace GlucacxeScadaSystem
 
             // UserSession 注册为单例
             containerRegistry.RegisterSingleton<UserSession>();
+
+
+            // 配置 GlobalConfig
+            containerRegistry.RegisterSingleton<GlobalConfig>();
 
 
             //导航

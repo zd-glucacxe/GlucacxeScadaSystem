@@ -11,6 +11,7 @@
 
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:helpers="clr-namespace:GlucacxeScadaSystem.Helpers"
              d:DataContext="{d:DesignInstance viewModels:ParamsViewModel}"
              d:DesignHeight="800"
              d:DesignWidth="1200"
@@ -69,10 +70,21 @@
                 <StackPanel Margin="10" Orientation="Horizontal">
                     <StackPanel Margin="10" Orientation="Horizontal">
                         <Label Width="80" Content="自动采集：" Margin="5"/>
-                        <ToggleButton Width="80" Margin="5" 
+                        <ToggleButton Width="80" Margin="5"  
                                   IsChecked="{Binding RootParam.PlcParam.AutoCollect, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
-                                  ToolTip="自动采集开关"/>
+                                  ToolTip="自动采集开关">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding ToggleCollectCommand}" />
+                                </i:EventTrigger>
+
+                           
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding ToggleCollectCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
                     </StackPanel>
                     <Rectangle Width="75"/>
                     <StackPanel Margin="10" Orientation="Horizontal">
@@ -80,7 +92,22 @@
                         <ToggleButton Width="80" Margin="5"  
                                   IsChecked="{Binding RootParam.PlcParam.AutoMock, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                   Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
-                                  ToolTip="自动模拟开关"/>
+                                  ToolTip="自动模拟开关">
+
+
+
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding ToggleAutoMockCommand}" />
+                                </i:EventTrigger>
+
+
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding ToggleAutoMockCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+
+                        </ToggleButton>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>

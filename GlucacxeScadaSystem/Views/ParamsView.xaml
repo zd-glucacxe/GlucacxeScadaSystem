@@ -109,6 +109,29 @@
 
                         </ToggleButton>
                     </StackPanel>
+
+
+                </StackPanel>
+
+                <StackPanel Margin="10" Orientation="Horizontal">
+                    <StackPanel Margin="10" Orientation="Horizontal">
+                        <Label Width="80" Content="启动服务：" Margin="5"/>
+                        <ToggleButton Width="80" Margin="5"  
+                                      IsChecked="{Binding RootParam.PlcParam.AutoPlcServer, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="启动S7服务">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding TogglePlcServerCommand}" />
+                                </i:EventTrigger>
+
+
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding TogglePlcServerCommand}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
 

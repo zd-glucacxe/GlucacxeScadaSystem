@@ -66,6 +66,11 @@ public class PlcParam : BindableBase
     /// Plc 模拟数据
     /// </summary>
     public bool AutoMock { get; set; }
+
+    /// <summary>
+    /// Plc 开启服务
+    /// </summary>
+    public bool AutoPlcServer { get; set; }
 }
 
 public class SystemParam

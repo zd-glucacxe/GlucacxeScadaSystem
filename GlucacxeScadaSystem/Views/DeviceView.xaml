@@ -9,7 +9,6 @@
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:DeviceViewModel}"
              mc:Ignorable="d" 
-
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              d:DesignHeight="800"
@@ -19,8 +18,237 @@
              FontSize="16"
              TextElement.FontSize="16"
              TextElement.FontWeight="Regular"
-             TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+             TextElement.Foreground="White">
     <Grid>
-        <TextBlock Text="This is DeviceView" FontSize="60"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="45"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="10*"/>
+        </Grid.RowDefinitions>
+
+        <Border Background="#009688">
+            <TextBlock Text="产线总控制" FontSize="30" HorizontalAlignment="Center"/>
+        </Border>
+
+        <Border Grid.Row="1" BorderBrush="#50a0ff" BorderThickness="1">
+            <UniformGrid Rows="1">
+                <Button Width="200" Height="100" Margin="10" Background="LimeGreen"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        Command="{Binding WriteDeviceControlCommand}"
+                        CommandParameter="TotalStart"
+                        Content="总启动"
+                        FontSize="40"/>
+                <Button Width="200" Height="100" Margin="10" Background="Red"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        Command="{Binding WriteDeviceControlCommand}"
+                        CommandParameter="TotalStop"
+                        Content="总停止"
+                        FontSize="40"/>
+                <Button Width="200" Height="100" Margin="10" Background="#50a0ff"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        Command="{Binding WriteDeviceControlCommand}"
+                        CommandParameter="MechanicalReset"
+                        Content="机械复位"
+                        FontSize="40"/>
+                <Button Width="200" Height="100" Margin="10" Background="#febf57"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        Command="{Binding WriteDeviceControlCommand}"
+                        CommandParameter="AlarmReset"
+                        Content="报警复位"
+                        FontSize="40"/>
+                <Button Width="200" Height="100" Margin="10" Background="#414141"
+                        materialDesign:ButtonProgressAssist.IsIndeterminate="True"
+                        materialDesign:ButtonProgressAssist.IsIndicatorVisible="True"
+                        materialDesign:ButtonProgressAssist.Value="-1"
+                        Command="{Binding WriteDeviceControlCommand}"
+                        CommandParameter="IdleRun"
+                        Content="空体运行"
+                        FontSize="40"/>
+            </UniformGrid>
+        </Border>
+
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!-- 左侧：工位控制 -->
+            <Border Grid.Column="0" BorderBrush="#50A0FF" BorderThickness="1">
+                <UniformGrid Columns="2" Rows="4" Margin="10">
+                    <!-- 脱脂工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="脱脂工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.DegreasingStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="脱脂工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding DegreasingStationCommand}" CommandParameter="DegreasingStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding DegreasingStationCommand}" CommandParameter="DegreasingStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <!-- 水分炉工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="水分炉工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.MoistureFurnaceStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="水分炉工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding MoistureFurnaceCommand}" CommandParameter="MoistureFurnaceStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding MoistureFurnaceCommand}" CommandParameter="MoistureFurnaceStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <!-- 粗细工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="粗细工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.RoughWashingStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="粗细工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding  ThicknessStationCommand}" CommandParameter="RoughWashingStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding ThicknessStationCommand}" CommandParameter="RoughWashingStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <!-- 冷却室工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="冷却室工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.CoolingRoomStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="冷却室工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding CoolingRoomCommand}" CommandParameter="CoolingRoomStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding CoolingRoomCommand}" CommandParameter="CoolingRoomStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <!-- 陶化工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="陶化工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.CeramicCoatingStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="陶化工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding  PhosphatingCommand}" CommandParameter="CeramicCoatingStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding PhosphatingCommand}" CommandParameter="CeramicStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <!-- 固化炉工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="固化炉工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.CuringOvenStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="固化炉工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding CuringFurnaceCommand}" CommandParameter="CuringOvenStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding CuringFurnaceCommand}" CommandParameter="CuringOvenStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <!-- 精洗工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="精洗工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.FineWashingStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="精洗工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding  PrecisionCleaningCommand}" CommandParameter="FineWashingStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding PrecisionCleaningCommand}" CommandParameter="FineWashingStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+
+                    <!-- 输送机工位 -->
+                    <StackPanel Margin="10" Orientation="Horizontal" VerticalAlignment="Center">
+                        <Label Width="120" Content="输送机工位：" FontSize="20" VerticalAlignment="Center" />
+                        <ToggleButton Width="100" Height="30"
+                                      IsChecked="{Binding ScadaReadData.ConveyorStationOpen}"
+                                      Style="{StaticResource MaterialDesignSwitchLightToggleButton}"
+                                      ToolTip="输送机工位开关"
+                                      VerticalAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Checked">
+                                    <i:InvokeCommandAction Command="{Binding ConveyorCommand}" CommandParameter="ConveyorStationOpen"/>
+                                </i:EventTrigger>
+                                <i:EventTrigger EventName="Unchecked">
+                                    <i:InvokeCommandAction Command="{Binding ConveyorCommand}" CommandParameter="ConveyorStationOpen"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+                </UniformGrid>
+            </Border>
+
+            <!-- 右侧：日志输出 -->
+            <Border Grid.Column="1" BorderBrush="#50A0FF" BorderThickness="1">
+                <GroupBox Margin="16" Header="日志文件">
+                    <GroupBox.InputBindings>
+                        <MouseBinding Command="{Binding ClearLogCommand}" Gesture="LeftDoubleClick"/>
+                    </GroupBox.InputBindings>
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Foreground="Black">
+                        <TextBlock FontSize="20" Text="{Binding LogContent}" TextWrapping="Wrap"/>
+                    </ScrollViewer>
+                </GroupBox>
+            </Border>
+        </Grid>
     </Grid>
 </UserControl>

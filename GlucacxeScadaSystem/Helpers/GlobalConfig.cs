@@ -6,6 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
+using FastReport.Utils;
 using GlucacxeScadaSystem.Models;
 using HslCommunication;
 using HslCommunication.Profinet.Siemens;
@@ -17,10 +19,12 @@ using NLog;
 namespace GlucacxeScadaSystem.Helpers;
 
 public class GlobalConfig : IDisposable
-{                                                          
-                                                           
-    public SiemensS7Net Plc { get; set; }                  
-                                                           
+{
+
+    public SiemensS7Net Plc { get; set; }
+
+    public bool PlcConnected { get; set; }
+
     /// <summary>                                          
     /// 数据字典，所有的读取数据都从这个字典里边读取 
     /// </summary>
@@ -86,15 +90,18 @@ public class GlobalConfig : IDisposable
     {
         try
         {
-           var res =  await Plc.ConnectServerAsync();
-
-           if (!res.IsSuccess)
-           {
-               _logger.Error($"PLC连接失败 {RootParam.PlcParam.PlcIp}:{RootParam.PlcParam.PlcPort}");
-           }
+            await Task.Delay(1000); // 确保服务端已完全启动
+            var res = await Plc.ConnectServerAsync();
+            PlcConnected = res.IsSuccess;
+            if (!res.IsSuccess)
+            {
+                _logger.Error($"PLC连接失败 {RootParam.PlcParam.PlcIp}:{RootParam.PlcParam.PlcPort}");
+                MessageBox.Show($"PLC连接失败 {RootParam.PlcParam.PlcIp}:{RootParam.PlcParam.PlcPort}");
+            }
         }
         catch (Exception ex)
         {
+            PlcConnected = false;
             _logger.Error($"PLC连接异常：{ex.Message}");
         }
     }
@@ -126,9 +133,9 @@ public class GlobalConfig : IDisposable
                 catch (Exception ex)
                 {
                     _logger.Error(ex.Message);
-                }  
-            }      
-        });        
+                }
+            }
+        });
     }
 
 
@@ -137,7 +144,7 @@ public class GlobalConfig : IDisposable
         // 对于Model 为Data类型的 使用浮点读取...
         await UpdatePlcToReadDataDic<float>("Data", "DBD");
     }
-        
+
     private async Task UpdateMonitorData()
     {
         await UpdatePlcToReadDataDic<bool>("Monitor", "DBX");
@@ -189,7 +196,7 @@ public class GlobalConfig : IDisposable
                 return;
             }
 
-            
+
             if (!res.IsSuccess)
             {
                 _logger.Error("数据读取失败");
@@ -231,7 +238,7 @@ public class GlobalConfig : IDisposable
             if (_cts != null)
             {
                 _cts.Cancel();
-                _cts.Dispose(); 
+                _cts.Dispose();
             }
         }
         catch (Exception ex)
@@ -252,7 +259,6 @@ public class GlobalConfig : IDisposable
         Plc.Slot = RootParam.PlcParam.PlcSlot;
         Plc.Rack = RootParam.PlcParam.PlcRack;
         Plc.ConnectTimeOut = RootParam.PlcParam.PlcConnectTimeOut;
-
     }
 
 
@@ -262,15 +268,15 @@ public class GlobalConfig : IDisposable
     /// <typeparam name="T"></typeparam>
     /// <param name="key"></param>
     /// <returns></returns>
-    public T GetValue<T>(string key) 
+    public T GetValue<T>(string key)
     {
-        if(ReadDataDic.TryGetValue(key, out object value))
+        if (ReadDataDic.TryGetValue(key, out object value))
         {
             return (T)value;
         }
         return default;
     }
-   
+
 
     public void Dispose()
     {

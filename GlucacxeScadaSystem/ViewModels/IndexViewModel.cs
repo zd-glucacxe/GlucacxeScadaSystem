@@ -38,11 +38,10 @@ public class IndexViewModel : BindableBase, IDisposable
     }
 
   
-    private void StartCollectionBasedOnConfig()
+    private async Task StartCollectionBasedOnConfig()
     {
-        _globalConfig.InitPlcServer();
+        //await _globalConfig.InitPlcServer();
 
-       
         if (_rootParam.PlcParam?.AutoCollect == true) // 添加了空值检查以确保安全
         {
             _globalConfig.StartCollectionAsync();

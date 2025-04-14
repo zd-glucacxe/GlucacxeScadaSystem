@@ -113,9 +113,6 @@ namespace GlucacxeScadaSystem
                 SqlSugarHelper.AddSqlSugarSetup(dbType, connectionStringRes);
             }
 
-
-           
-           
         }
 
 

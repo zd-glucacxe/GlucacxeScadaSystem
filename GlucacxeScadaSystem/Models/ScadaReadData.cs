@@ -5,7 +5,7 @@ using SqlSugar;
 namespace GlucacxeScadaSystem.Models;
 
 /// <summary>
-/// 与Excel表中的数据一一
+/// 与Excel表中的数据一一对应
 /// </summary>
 public class ScadaReadData: EntityBase
 {
@@ -65,6 +65,7 @@ public class ScadaReadData: EntityBase
         set => SetProperty(ref _idleRun, value);
     }
 
+
     private bool _degreasingStationOpen;
     /// <summary>
     /// 脱脂工位
@@ -75,6 +76,87 @@ public class ScadaReadData: EntityBase
         get => _degreasingStationOpen;
         set => SetProperty(ref _degreasingStationOpen, value);
     }
+
+    private bool _moistureFurnaceStationOpen;
+    /// <summary>
+    /// 水分炉工位
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public bool MoistureFurnaceStationOpen
+    {
+        get => _moistureFurnaceStationOpen;
+        set => SetProperty(ref _moistureFurnaceStationOpen, value);
+    }
+
+    private bool _roughWashingStationOpen;
+    /// <summary>
+    /// 粗洗工位
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public bool RoughWashingStationOpen
+    {
+        get => _roughWashingStationOpen;
+        set => SetProperty(ref _roughWashingStationOpen, value);
+    }
+
+    private bool _coolingRoomStationOpen;
+    /// <summary>
+    /// 冷却室工位
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public bool CoolingRoomStationOpen
+    {
+        get => _coolingRoomStationOpen;
+        set => SetProperty(ref _coolingRoomStationOpen, value);
+    }
+
+    private bool _ceramicCoatingStationOpen;
+    /// <summary>
+    /// 陶化工位
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public bool CeramicCoatingStationOpen
+    {
+        get => _ceramicCoatingStationOpen;
+        set => SetProperty(ref _ceramicCoatingStationOpen, value);
+    }
+
+
+    private bool _curingOvenStationOpen;
+    /// <summary>
+    /// 固化炉工位
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public bool CuringOvenStationOpen
+    {
+        get => _curingOvenStationOpen;
+        set => SetProperty(ref _curingOvenStationOpen, value);
+    }
+
+
+    private bool _fineWashingStationOpen;
+    /// <summary>
+    /// 精洗工位
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public bool FineWashingStationOpen
+    {
+        get => _fineWashingStationOpen;
+        set => SetProperty(ref _fineWashingStationOpen, value);
+    }
+
+    private bool _conveyorStationOpen;
+    /// <summary>
+    /// 输送机工位
+    /// </summary>
+    [SugarColumn(IsIgnore = true)]
+    public bool ConveyorStationOpen
+    {
+        get => _conveyorStationOpen;
+        set => SetProperty(ref _conveyorStationOpen, value);
+    }
+
+
     #endregion
 
     #region Monitor（监控状态）

@@ -10,8 +10,42 @@
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:ChartViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:vm="clr-namespace:GlucacxeScadaSystem.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:scottplot="http://schemas.scottplot.net/2008/xaml/presentation"
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource MaterialDesign.Brush.Background}"
+             FontFamily="Microsoft YaHei"
+             FontSize="16"
+             TextElement.FontSize="16"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}">
     <Grid>
-        <TextBlock Text="页面跳转测试" FontSize="60"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <Label Margin="5" Content="开始日期:"/>
+            <DatePicker Margin="5"
+                        Width="130"
+                        SelectedDate="{Binding StartTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="StartDate"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            <Label Margin="5" Content="结束日期:"/>
+            <DatePicker Margin="5"
+                        Width="130"
+                        SelectedDate="{Binding EndTime, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="EndDate"
+                        Style="{StaticResource MaterialDesignFloatingHintDatePicker}" />
+            <Button Width="130" Margin="20,5,5,5" Content="查询数据" Command="{Binding SearchCommand}"
+                    Style="{DynamicResource MyButtonStyle }"/>
+        </StackPanel>
+ 
+        <scottplot:WpfPlot x:Name="WpfPlot" Grid.Row="1" Margin="5"/>
+
     </Grid>
 </UserControl>

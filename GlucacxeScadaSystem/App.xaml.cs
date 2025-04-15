@@ -13,8 +13,9 @@ using NLog.Extensions.Logging;
 using Prism.Ioc;
 using Prism.Modularity;
 using Prism.Regions;
+using XyLicense.Library;
 
-namespace GlucacxeScadaSystem
+namespace GlucacxeScadaSystem 
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -23,6 +24,14 @@ namespace GlucacxeScadaSystem
     {
         protected override Window CreateShell()
         {
+            //var res =  LicenceHelper.ValidLicense();
+            //if (!res)
+            //{
+            //    var mac = ComputerHelper.GetComputerDetail();
+            //    MessageBox.Show($"License 授权失败，请联系管理员！{mac}");
+
+            //}
+
             //return Container.Resolve<MainWindow>();
             return Container.Resolve<ShellView>();
         }

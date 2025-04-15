@@ -40,6 +40,9 @@
     <Reference Include="FastReport.VSDesign">
       <HintPath>DLL\FastReport.VSDesign.dll</HintPath>
     </Reference>
+    <Reference Include="TulingLicense.Library">
+      <HintPath>DLL\TulingLicense.Library.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\bg.png" />

@@ -40,16 +40,26 @@ public class GlobalConfig : IDisposable
     /// </summary>
     public List<WriteEntity> WriteEntityList { get; set; } = new();
 
+    /// <summary>
+    /// 并发安全的队列
+    /// </summary>
+    private ConcurrentQueue<ScadaReadData> _scadaReadDataQueue = new();
+
     public readonly RootParam RootParam;
     private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
     private CancellationTokenSource _cts = new();
+    private CancellationTokenSource _ctsSave = new();
 
     public GlobalConfig(RootParam rootParam)
     {
         RootParam = rootParam;
         InitPlc();
         InitExcelAddress();
+
+        //InitDequeueToDataBase();
     }
+
+    
 
     /// <summary>
     /// 加载Excel数据 并写入相应的List
@@ -128,6 +138,9 @@ public class GlobalConfig : IDisposable
                     await UpdateControlData();  // 读取 DBX 的控制数据
                     await UpdateMonitorData();  // 读取 DBX 的监控数据
                     await UpdateProcessData();  // 读取 DBD 的过程数据（如 float）
+
+                    //await SaveDataAsync();
+
                     await Task.Delay(RootParam.PlcParam.PlcCycleInterval, _cts.Token);
                 }
                 catch (Exception ex)
@@ -136,6 +149,65 @@ public class GlobalConfig : IDisposable
                 }
             }
         });
+    }
+
+    /// <summary>
+    /// 先写入到队列中，然后再批量写入数据库
+    /// </summary>
+    /// <returns></returns>
+    private async Task SaveDataAsync()
+    {
+        var saveAddress = ReadEntityList.Where(x => x.Save).ToList();
+        if (!saveAddress.Any()) return;
+        
+        // 创建新的数据对象
+        var scadaReadData = new ScadaReadData()
+        {
+            CreateTime = DateTime.Now,
+            UpdateTime = DateTime.Now
+        };
+
+
+        foreach (var prop in saveAddress)
+        {
+            var property = typeof(ScadaReadData).GetProperty(prop.En);
+
+            if (property != null && ReadDataDic.TryGetValue(prop.En, out object value))
+            {
+                property.SetValue(scadaReadData, value);
+            }
+
+            // 将数据添加到队列
+            _scadaReadDataQueue.Enqueue(scadaReadData);
+        }
+        
+    }
+
+    private void InitDequeueToDataBase()
+    {
+        StopSave();
+        _ctsSave = new CancellationTokenSource();
+        Task.Run(async () =>
+        {
+            while (!_cts.Token.IsCancellationRequested)
+            {
+                try
+                {
+                    // 从队列中取出数据
+                    if (_scadaReadDataQueue.TryDequeue(out var data))
+                    {
+                        // 插入数据到数据库
+                        await SqlSugarHelper.Db.Insertable(data).ExecuteCommandAsync();
+                    }
+                    // 等待一段时间，避免过于频繁的写入
+                    Task.Delay(100, _ctsSave.Token).Wait();
+                }
+                catch (Exception ex)
+                {
+                    _logger.Error(ex);
+                }
+            }
+        }, _ctsSave.Token);
     }
 
 
@@ -229,7 +301,7 @@ public class GlobalConfig : IDisposable
 
 
     /// <summary>  
-    /// 停止所有的异步任务
+    /// 停止所有的采集异步任务
     /// </summary>
     public void StopCollection()
     {
@@ -239,6 +311,26 @@ public class GlobalConfig : IDisposable
             {
                 _cts.Cancel();
                 _cts.Dispose();
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.Error(ex.Message);
+        }
+    }
+
+
+    /// <summary>
+    /// 停止所有的保存异步任务
+    /// </summary>
+    public void StopSave()
+    {
+        try
+        {
+            if (_ctsSave != null)
+            {
+                _ctsSave.Cancel();
+                _ctsSave.Dispose();
             }
         }
         catch (Exception ex)

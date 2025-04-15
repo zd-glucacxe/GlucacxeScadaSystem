@@ -9,7 +9,7 @@ public class ReadEntity
     public string Cn { get; set; }
     public string En { get; set; }
     public string Address { get; set; }
-    public string Save { get; set; }
+    public bool Save { get; set; }
     
 }
 

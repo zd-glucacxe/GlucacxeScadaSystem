@@ -9,8 +9,162 @@
              mvvm:ViewModelLocator.AutoWireViewModel="True"
              d:DataContext="{d:DesignInstance viewModels:FormulaViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             xmlns:vm="clr-namespace:GlucacxeScadaSystem.ViewModels"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:conv="http://schemas.superdev.ch/valueconverters/2016/xaml"
+             d:DesignHeight="800"
+             d:DesignWidth="1200"
+             Background="{DynamicResource MaterialDesign.Brush.Background}"
+             FontFamily="Microsoft YaHei"
+             FontSize="16"
+             TextElement.FontSize="16"
+             TextElement.FontWeight="Regular"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}">
+
+    <UserControl.Resources>
+        <conv:BoolToStringConverter x:Key="BoolToBg" TrueValue="#e3f2fd" FalseValue="White"/>
+    </UserControl.Resources>
+
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Border BorderBrush="#546e7a" BorderThickness="1">
+            <StackPanel Margin="5" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Width="130" Margin="20,5,5,5" Content="查询配方" Command="{Binding QueryFormulaCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="20,5,5,5" Content="新建配方" Command="{Binding CreateFormulaCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="20,5,5,5" Content="保存配方" Command="{Binding SaveFormulaCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="20,5,5,5" Content="删除配方" Command="{Binding DeleteFormulaCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+                <Button Width="130" Margin="20,5,5,5" Content="下载配方" Command="{Binding DownloadFormulaCommand}"
+                        Style="{DynamicResource MyButtonStyle }"/>
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+
+            <ScrollViewer >
+                <ItemsControl Margin="5" ItemsSource="{Binding FormulaList}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <materialDesign:Card Margin="0,0,0,10" 
+                                                 Background="{Binding IsSelected, Converter={StaticResource BoolToBg}}"
+                                                 Cursor="Hand" UniformCornerRadius="8" >
+                                <i:Interaction.Triggers>
+                                    <i:EventTrigger EventName="MouseLeftButtonDown">
+                                        <i:InvokeCommandAction Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext.SelectFormulaCommand}" CommandParameter="{Binding}" />
+                                    </i:EventTrigger>
+                                </i:Interaction.Triggers>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!--配方图标-->
+                                    <materialDesign:PackIcon Width="80" Height="80" Margin="20"
+                                                             HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                             Kind="FileDocument"/>
+
+                                    <!--配方信息-->
+                                    <StackPanel Grid.Column="1" Margin="8" VerticalAlignment="Center">
+                                        <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding Name}"
+                                                   TextAlignment="Left"/>
+                                        <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding Description}"
+                                                   TextAlignment="Left" TextWrapping="Wrap"/>
+                                        <TextBlock FontSize="18" FontWeight="Bold" Text="{Binding CreateTime}"
+                                                   TextAlignment="Left"/>
+                                    </StackPanel>
+                                </Grid>
+                            </materialDesign:Card> 
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </ScrollViewer>
+
+
+            <Border Grid.Column="1" BorderBrush="#546e7a" BorderThickness="1">
+                <StackPanel>
+                    <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <TextBlock Margin="10" Text="配方名称："/>
+                        <TextBox Width="180" Margin="10" Text="{Binding CurrentFormula.Name}"/>
+                        <TextBlock Margin="10" Text="配方描述："/>
+                        <TextBox Width="180" Margin="10" Text="{Binding CurrentFormula.Description}"/>
+                    </StackPanel>
+                    
+                    <UniformGrid Columns="2">
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="脱脂设定压力上限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.DegreasingSetPressureUpperLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="脱脂设定压力下限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.DegreasingSetPressureLowerLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="粗洗喷淋泵过载上限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.RoughWashingSprayPumpOverloadUpperLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="粗洗液位下限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.RoughWashingLevelLowerLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="陶化喷淋泵过载上限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.CeramicCoatingSprayPumpOverloadUpperLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="精洗喷淋泵过载上限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.FineWashingSprayPumpOverloadUpperLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="精洗液位下限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.FineWashingLevelLowerLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="水分炉温度上限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.MoistureFurnaceTemperatureUpperLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="水分炉温度下限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.MoistureFurnaceTemperatureLowerLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="冷却室离心风机过载上限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.CoolingRoomCentrifugalFanOverloadUpperLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="固化炉温度上限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.CuringOvenTemperatureUpperLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="固化炉温度下限值：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.CuringOvenTemperatureLowerLimit}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="输送机设定速度：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.ConveyorSetSpeed}"/>
+                        </StackPanel>
+                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock Margin="10" Text="输送机设定频率：" TextAlignment="Left"/>
+                            <TextBox Width="180" Margin="10" TextAlignment="Left" Text="{Binding CurrentFormula.ConveyorSetFrequency}"/>
+                        </StackPanel>
+                    </UniformGrid>
+
+
+                </StackPanel>
+            </Border>
+        </Grid>
             
     </Grid>
 </UserControl>

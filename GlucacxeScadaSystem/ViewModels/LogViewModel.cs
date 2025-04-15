@@ -105,7 +105,7 @@ public class LogViewModel : BindableBase
                 // 筛选出符合条件的文件夹
                 var recentFolders = folders.Where(dir =>
                 {
-                    if (DateTime.TryParse(dir.Name, out DateTime foldDateTime))
+                    if (DateTime.TryParse(dir.Name, out DateTime foldDateTime)) 
                     {
                         return foldDateTime >= startDate && foldDateTime <= endDate;
                     }
